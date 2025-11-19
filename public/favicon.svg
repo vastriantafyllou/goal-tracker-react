@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#6366f1;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#9333ea;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background rounded square -->
+  <rect x="4" y="4" width="56" height="56" rx="12" fill="url(#grad)"/>
+  
+  <!-- Target icon (white) -->
+  <g fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Outer circle -->
+    <circle cx="32" cy="32" r="14"/>
+    <!-- Middle circle -->
+    <circle cx="32" cy="32" r="9"/>
+    <!-- Inner dot -->
+    <circle cx="32" cy="32" r="2" fill="#ffffff"/>
+  </g>
+</svg>
