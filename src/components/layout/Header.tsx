@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router";
 import { Moon, Sun, Target, Home, ListChecks, Users, Folders } from "lucide-react";
-import { useTheme } from "@/context/ThemeProvider";
+import { useTheme } from "@/hooks/useTheme";
 import { useAuth } from "@/hooks/useAuth";
 import { UserRole } from "@/schemas/users";
 import { AuthButton } from "@/components/AuthButton";
