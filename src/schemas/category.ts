@@ -1,6 +1,6 @@
 import {z} from "zod";
 
-// Category schema για read operations
+// Category schema for read operations
 export const categorySchema = z.object({
   id: z.number(),
   name: z.string(),
@@ -9,9 +9,14 @@ export const categorySchema = z.object({
 
 export type Category = z.infer<typeof categorySchema>;
 
-// Schema για δημιουργία category
+// Schema for creating category
 export const categoryCreateSchema = z.object({
-  name: z.string().min(2, {message: "Το όνομα πρέπει να έχει τουλάχιστον 2 χαρακτήρες"}).max(50, {message: "Το όνομα δεν μπορεί να ξεπεράσει τους 50 χαρακτήρες"}),
+  name: z.string().min(2, {message: "Name must be at least 2 characters"}).max(50, {message: "Name cannot exceed 50 characters"}),
 });
 
 export type CategoryCreateFields = z.infer<typeof categoryCreateSchema>;
+
+// Schema for updating category (same as create)
+export const categoryUpdateSchema = categoryCreateSchema;
+
+export type CategoryUpdateFields = z.infer<typeof categoryUpdateSchema>;
