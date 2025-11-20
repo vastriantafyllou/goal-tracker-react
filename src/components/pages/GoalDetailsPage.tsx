@@ -11,7 +11,7 @@ import {useNavigate, useParams} from "react-router";
 import {toast} from "sonner";
 import {getAllCategories, createCategory} from "@/services/api.categories.ts";
 import type {Category} from "@/schemas/category.ts";
-import {Plus, FolderPlus} from "lucide-react";
+import {Plus, FolderPlus, Target, Edit} from "lucide-react";
 
 const GoalDetailsPage = () => {
   const { goalId } = useParams();
@@ -114,15 +114,26 @@ const GoalDetailsPage = () => {
   }
 
   return(
-    <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-10 max-w-4xl">
-      {/* Page Header */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100 tracking-tight mb-2">
-          {isEdit ? "Edit Goal" : "Create New Goal"}
-        </h1>
-        <p className="text-sm text-slate-600 dark:text-slate-400">
-          {isEdit ? "Update your goal details below" : "Fill in the details to create a new goal"}
-        </p>
+    <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 max-w-4xl space-y-6">
+      {/* Page Header Card */}
+      <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-lg border border-slate-200 dark:border-slate-800 p-6 transition-all">
+        <div className="flex items-center gap-3">
+          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg">
+            {isEdit ? (
+              <Edit className="w-6 h-6 text-white" strokeWidth={2.5} />
+            ) : (
+              <Target className="w-6 h-6 text-white" strokeWidth={2.5} />
+            )}
+          </div>
+          <div>
+            <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">
+              {isEdit ? "Edit Goal" : "Create New Goal"}
+            </h1>
+            <p className="text-sm text-slate-600 dark:text-slate-400">
+              {isEdit ? "Update your goal details below" : "Fill in the details to create a new goal"}
+            </p>
+          </div>
+        </div>
       </div>
 
       {/* Form Card */}
