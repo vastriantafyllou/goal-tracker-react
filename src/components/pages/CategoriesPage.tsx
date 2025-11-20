@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { Plus, Pencil, Trash2, FolderPlus } from "lucide-react";
+import { useEffect, useState, useMemo } from "react";
+import { Plus, Pencil, Trash2, FolderPlus, Search, X, AlertTriangle, Filter } from "lucide-react";
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -33,6 +33,14 @@ const CategoriesPage = () => {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [editingCategory, setEditingCategory] = useState<Category | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  
+  // Search, filter, and sort state
+  const [searchQuery, setSearchQuery] = useState("");
+  const [sortBy, setSortBy] = useState<string>("name-asc");
+  const [filterBy, setFilterBy] = useState<string>("All");
+  
+  // Delete confirmation modal state
+  const [deleteConfirmCategory, setDeleteConfirmCategory] = useState<Category | null>(null);
 
   // Form for creating new category
   const createForm = useForm<CategoryCreateFields>({
@@ -128,15 +136,18 @@ const CategoriesPage = () => {
     }
   };
 
-  // Delete category
-  const handleDelete = async (id: number, name: string) => {
-    if (!confirm(`Are you sure you want to delete the category "${name}"?`)) {
-      return;
-    }
-
+  // Delete category - with danger awareness
+  const handleDeleteClick = (category: Category) => {
+    setDeleteConfirmCategory(category);
+  };
+  
+  const confirmDelete = async () => {
+    if (!deleteConfirmCategory) return;
+    
     try {
-      await deleteCategory(id);
+      await deleteCategory(deleteConfirmCategory.id);
       toast.success("Category deleted successfully!");
+      setDeleteConfirmCategory(null);
       loadCategories();
     } catch (error) {
       toast.error(
@@ -157,36 +168,173 @@ const CategoriesPage = () => {
     setEditingCategory(null);
     editForm.reset();
   };
+  
+  // Filter and sort categories
+  const filteredAndSortedCategories = useMemo(() => {
+    let filtered = categories;
+    
+    // Search filter
+    if (searchQuery) {
+      filtered = filtered.filter(cat =>
+        cat.name.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
+    
+    // Goal count filter
+    if (filterBy === "WithGoals") {
+      filtered = filtered.filter(cat => (cat.goalCount ?? 0) > 0);
+    } else if (filterBy === "Empty") {
+      filtered = filtered.filter(cat => (cat.goalCount ?? 0) === 0);
+    }
+    
+    // Sorting
+    const sorted = [...filtered];
+    const [sortField, sortOrder] = sortBy.split('-');
+    
+    sorted.sort((a, b) => {
+      let aVal: string | number = 0;
+      let bVal: string | number = 0;
+
+
+      if (sortField === 'name') {
+        aVal = a.name.toLowerCase();
+        bVal = b.name.toLowerCase();
+      } else if (sortField === 'count') {
+        aVal = a.goalCount ?? 0;
+        bVal = b.goalCount ?? 0;
+      }
+      
+      if (sortOrder === 'asc') {
+        return aVal > bVal ? 1 : -1;
+      } else {
+        return aVal < bVal ? 1 : -1;
+      }
+    });
+    
+    return sorted;
+  }, [categories, searchQuery, sortBy, filterBy]);
+  
+  // Clear filters
+  const clearFilters = () => {
+    setSearchQuery("");
+    setFilterBy("All");
+  };
+  
+  const hasActiveFilters = searchQuery || filterBy !== "All";
 
   if (loading) {
     return (
-      <div className="text-center py-8 text-slate-700 dark:text-slate-300">
-        Loading categories...
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <div className="text-center space-y-4">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto"></div>
+          <p className="text-slate-600 dark:text-slate-400 font-medium">Loading categories...</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-10 max-w-7xl">
-      {/* Page Header */}
-      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-10">
-        <div>
-          <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100 tracking-tight mb-1">
-            My Categories
-          </h1>
-          <p className="text-sm text-slate-600 dark:text-slate-400">
-            Manage your goal categories
-          </p>
+    <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 max-w-7xl space-y-6">
+      {/* Page Header Card */}
+      <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-lg border border-slate-200 dark:border-slate-800 p-6 transition-all">
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg">
+              <FolderPlus className="w-6 h-6 text-white" strokeWidth={2.5} />
+            </div>
+            <div>
+              <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">
+                My Categories
+              </h1>
+              <p className="text-sm text-slate-600 dark:text-slate-400">
+                Manage your goal categories
+              </p>
+            </div>
+          </div>
+          <Button
+            onClick={() => setIsCreateDialogOpen(true)}
+            className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transition-all hover:scale-105"
+          >
+            <Plus className="w-4 h-4 mr-2" />
+            New Category
+          </Button>
         </div>
-        <Button
-          onClick={() => setIsCreateDialogOpen(true)}
-          className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transition-all hover:scale-105"
-        >
-          <Plus className="w-4 h-4 mr-2" />
-          New Category
-        </Button>
       </div>
 
+      {/* Search, Filters, and Sort */}
+      {categories.length > 0 && (
+        <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-lg border border-slate-200 dark:border-slate-800 p-4 transition-all">
+          <div className="flex flex-col gap-4">
+            {/* Search Bar */}
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+              <Input
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search categories by name..."
+                className="pl-10 dark:bg-slate-800 dark:border-slate-700 dark:placeholder-slate-400"
+              />
+              {searchQuery && (
+                <button
+                  onClick={() => setSearchQuery("")}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              )}
+            </div>
+            
+            {/* Filters and Sort Row */}
+            <div className="flex flex-col sm:flex-row gap-3">
+              {/* Filter by Goal Count */}
+              <div className="flex-1">
+                <select
+                  value={filterBy}
+                  onChange={(e) => setFilterBy(e.target.value)}
+                  className="w-full h-9 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 text-sm text-slate-900 dark:text-slate-100 transition-all outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 dark:focus:ring-indigo-900"
+                >
+                  <option value="All">All Categories</option>
+                  <option value="WithGoals">With Goals</option>
+                  <option value="Empty">Empty Categories</option>
+                </select>
+              </div>
+              
+              {/* Sort By */}
+              <div className="flex-1">
+                <select
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value)}
+                  className="w-full h-9 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 text-sm text-slate-900 dark:text-slate-100 transition-all outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 dark:focus:ring-indigo-900"
+                >
+                  <option value="name-asc">Name (A-Z)</option>
+                  <option value="name-desc">Name (Z-A)</option>
+                  <option value="count-desc">Most Goals</option>
+                  <option value="count-asc">Fewest Goals</option>
+                </select>
+              </div>
+            </div>
+            
+            {/* Active Filters Info */}
+            {hasActiveFilters && (
+              <div className="flex items-center justify-between pt-2 border-t border-slate-200 dark:border-slate-800">
+                <span className="text-sm text-slate-600 dark:text-slate-400">
+                  Showing {filteredAndSortedCategories.length} of {categories.length} categories
+                </span>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={clearFilters}
+                  className="text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/20"
+                >
+                  <X className="w-3 h-3 mr-1" />
+                  Clear Filters
+                </Button>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+      
       {/* Categories Table or Empty State */}
       {categories.length === 0 ? (
         <div className="bg-gradient-to-br from-white to-slate-50 dark:from-slate-900 dark:to-slate-900/50 rounded-2xl shadow-lg border border-slate-200 dark:border-slate-800 p-12 text-center">
@@ -229,7 +377,18 @@ const CategoriesPage = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {categories.map((category) => (
+              {filteredAndSortedCategories.length === 0 ? (
+                <TableRow>
+                  <TableCell colSpan={4} className="text-center py-12">
+                    <div className="text-slate-500 dark:text-slate-400">
+                      <Filter className="w-8 h-8 mx-auto mb-2 opacity-50" />
+                      <p className="font-medium">No categories match your filters</p>
+                      <p className="text-sm mt-1">Try adjusting your search or filters</p>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ) : 
+                filteredAndSortedCategories.map((category) => (
                 <TableRow
                   key={category.id}
                   className="hover:bg-gradient-to-r hover:from-slate-50 hover:to-transparent dark:hover:from-slate-800/30 dark:hover:to-transparent transition-all duration-200 border-b border-slate-100 dark:border-slate-800 last:border-0"
@@ -256,7 +415,7 @@ const CategoriesPage = () => {
                       <Button
                         variant="destructive"
                         size="icon-sm"
-                        onClick={() => handleDelete(category.id, category.name)}
+                        onClick={() => handleDeleteClick(category)}
                         className="hover:shadow-lg transition-all hover:scale-105"
                       >
                         <Trash2 className="w-4 h-4" />
@@ -264,7 +423,8 @@ const CategoriesPage = () => {
                     </div>
                   </TableCell>
                 </TableRow>
-              ))}
+              ))
+              }
             </TableBody>
           </Table>
         </div>
@@ -377,6 +537,76 @@ const CategoriesPage = () => {
               </Button>
             </DialogFooter>
           </form>
+        </DialogContent>
+      </Dialog>
+      
+      {/* Delete Confirmation Dialog - Danger Aware */}
+      <Dialog open={!!deleteConfirmCategory} onOpenChange={() => setDeleteConfirmCategory(null)}>
+        <DialogContent className="sm:max-w-[500px] bg-white dark:bg-slate-900">
+          <DialogHeader>
+            <div className="flex items-center gap-3">
+              <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
+                deleteConfirmCategory && (deleteConfirmCategory.goalCount ?? 0) > 0
+                  ? "bg-red-100 dark:bg-red-900/30"
+                  : "bg-slate-100 dark:bg-slate-800"
+              }`}>
+                <AlertTriangle className={`w-6 h-6 ${
+                  deleteConfirmCategory && (deleteConfirmCategory.goalCount ?? 0) > 0
+                    ? "text-red-600 dark:text-red-400"
+                    : "text-slate-600 dark:text-slate-400"
+                }`} />
+              </div>
+              <DialogTitle className="text-2xl font-bold text-slate-900 dark:text-slate-100">
+                Delete Category?
+              </DialogTitle>
+            </div>
+            <DialogDescription className="text-slate-600 dark:text-slate-400 pt-4">
+              {deleteConfirmCategory && (deleteConfirmCategory.goalCount ?? 0) > 0 ? (
+                <div className="space-y-3">
+                  <p className="font-semibold text-red-600 dark:text-red-400">
+                    ⚠️ Warning: This category contains {deleteConfirmCategory.goalCount} goal{deleteConfirmCategory.goalCount !== 1 ? 's' : ''}.
+                  </p>
+                  <p>
+                    Deleting the category <span className="font-semibold">"{deleteConfirmCategory.name}"</span> may affect goal associations. 
+                    Goals in this category will lose their category assignment.
+                  </p>
+                  <p className="text-sm">
+                    Are you sure you want to proceed?
+                  </p>
+                </div>
+              ) : (
+                <p>
+                  Are you sure you want to delete the category <span className="font-semibold">"{deleteConfirmCategory?.name}"</span>? 
+                  This action cannot be undone.
+                </p>
+              )}
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="gap-2">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => setDeleteConfirmCategory(null)}
+              className="h-11 px-6"
+            >
+              Cancel
+            </Button>
+            <Button
+              type="button"
+              variant="destructive"
+              onClick={confirmDelete}
+              className="h-11 px-6 shadow-lg hover:shadow-xl transition-all"
+            >
+              {deleteConfirmCategory && (deleteConfirmCategory.goalCount ?? 0) > 0 ? (
+                <span className="flex items-center gap-2">
+                  <AlertTriangle className="w-4 h-4" />
+                  Delete Anyway
+                </span>
+              ) : (
+                "Delete"
+              )}
+            </Button>
+          </DialogFooter>
         </DialogContent>
       </Dialog>
     </div>
