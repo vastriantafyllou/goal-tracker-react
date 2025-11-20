@@ -98,6 +98,7 @@ const GoalsPage = () => {
                 <TableHead className="font-bold text-slate-800 dark:text-slate-100 py-6">Title</TableHead>
                 <TableHead className="font-bold text-slate-800 dark:text-slate-100 py-6">Status</TableHead>
                 <TableHead className="font-bold text-slate-800 dark:text-slate-100 py-6">Due Date</TableHead>
+                <TableHead className="font-bold text-slate-800 dark:text-slate-100 py-6">Category</TableHead>
                 <TableHead className="text-right font-bold text-slate-800 dark:text-slate-100 py-6 px-6">Actions</TableHead>
               </TableRow>
             </TableHeader>
@@ -120,6 +121,15 @@ const GoalsPage = () => {
                   </TableCell>
                   <TableCell className="text-slate-700 dark:text-slate-300 font-medium py-6">
                     {goal.dueDate ? new Date(goal.dueDate).toLocaleDateString() : "—"}
+                  </TableCell>
+                  <TableCell className="text-slate-700 dark:text-slate-300 py-6">
+                    {goal.categoryName ? (
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-gradient-to-r from-indigo-50 to-purple-50 text-indigo-700 dark:from-indigo-900/30 dark:to-purple-900/30 dark:text-indigo-300">
+                        📁 {goal.categoryName}
+                      </span>
+                    ) : (
+                      <span className="text-slate-400 dark:text-slate-600 text-sm italic">No Category</span>
+                    )}
                   </TableCell>
                   <TableCell className="text-right py-6">
                     <div className="flex justify-end gap-2.5">
