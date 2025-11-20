@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
@@ -24,7 +24,11 @@ import {
   TrendingDown,
   X,
   Save,
-  Search
+  Search,
+  Filter,
+  AlertTriangle,
+  ChevronLeft,
+  ChevronRight
 } from "lucide-react";
 
 export default function UserManagementPage() {
@@ -37,8 +41,13 @@ export default function UserManagementPage() {
   const [pageSize] = useState(10);
   const [totalRecords, setTotalRecords] = useState(0);
   const [searchUsername, setSearchUsername] = useState("");
+  const [roleFilter, setRoleFilter] = useState<string>("All");
   const [editingUser, setEditingUser] = useState<UserReadOnly | null>(null);
   const [editForm, setEditForm] = useState<UserUpdateFields>({});
+  const [roleChangeConfirm, setRoleChangeConfirm] = useState<{
+    user: UserReadOnly;
+    action: 'promote' | 'demote';
+  } | null>(null);
 
   const isSuperAdmin = userRole === UserRole.SuperAdmin;
   const isAdmin = userRole === UserRole.Admin || isSuperAdmin;
@@ -50,13 +59,13 @@ export default function UserManagementPage() {
       navigate("/login");
       return;
     }
-    
+
     if (!isAdmin) {
       toast.error("Access denied - Admin or SuperAdmin role required");
       navigate("/goals");
       return;
     }
-    
+
     loadUsers();
   }, [pageNumber, isAuthenticated, isAdmin, navigate]);
 
@@ -92,23 +101,31 @@ export default function UserManagementPage() {
     }
   };
 
-  const handlePromote = async (id: number, username: string) => {
-    try {
-      await promoteToAdmin(id);
-      toast.success(`User "${username}" promoted to Admin`);
-      loadUsers();
-    } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Failed to promote");
-    }
+  const requestPromote = (user: UserReadOnly) => {
+    setRoleChangeConfirm({ user, action: 'promote' });
   };
 
-  const handleDemote = async (id: number, username: string) => {
+  const requestDemote = (user: UserReadOnly) => {
+    setRoleChangeConfirm({ user, action: 'demote' });
+  };
+
+  const confirmRoleChange = async () => {
+    if (!roleChangeConfirm) return;
+    
+    const { user, action } = roleChangeConfirm;
+    
     try {
-      await demoteToUser(id);
-      toast.success(`User "${username}" demoted to User`);
+      if (action === 'promote') {
+        await promoteToAdmin(user.id);
+        toast.success(`User "${user.username}" promoted to Admin`);
+      } else {
+        await demoteToUser(user.id);
+        toast.success(`User "${user.username}" demoted to User`);
+      }
+      setRoleChangeConfirm(null);
       loadUsers();
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Failed to demote");
+      toast.error(error instanceof Error ? error.message : `Failed to ${action}`);
     }
   };
 
@@ -164,6 +181,12 @@ export default function UserManagementPage() {
     }
   };
 
+  // Client-side role filtering
+  const filteredUsers = useMemo(() => {
+    if (roleFilter === "All") return users;
+    return users.filter(user => user.userRole === roleFilter);
+  }, [users, roleFilter]);
+
   const totalPages = Math.ceil(totalRecords / pageSize);
 
   if (loading && users.length === 0) {
@@ -204,37 +227,61 @@ export default function UserManagementPage() {
         </div>
       </div>
 
-      {/* Search Bar */}
+      {/* Search and Filter Bar */}
       <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-lg border border-slate-200 dark:border-slate-800 p-4">
-        <div className="flex gap-3">
-          <div className="flex-1">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-              <Input
-                value={searchUsername}
-                onChange={(e) => setSearchUsername(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-                placeholder="Search by username..."
-                className="pl-10 dark:bg-slate-800 dark:border-slate-700 dark:placeholder-slate-400"
-              />
+        <div className="flex flex-col gap-4">
+          {/* Search Row */}
+          <div className="flex gap-3">
+            <div className="flex-1">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                <Input
+                  value={searchUsername}
+                  onChange={(e) => setSearchUsername(e.target.value)}
+                  onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+                  placeholder="Search by username..."
+                  className="pl-10 dark:bg-slate-800 dark:border-slate-700 dark:placeholder-slate-400"
+                />
+              </div>
             </div>
-          </div>
-          <Button onClick={handleSearch} className="bg-indigo-600 hover:bg-indigo-700">
-            <Search className="w-4 h-4 mr-2" />
-            Search
-          </Button>
-          {searchUsername && (
-            <Button 
-              variant="outline" 
-              onClick={() => {
-                setSearchUsername("");
-                setPageNumber(1);
-                setTimeout(loadUsers, 0);
-              }}
-            >
-              Clear
+            <Button onClick={handleSearch} className="bg-indigo-600 hover:bg-indigo-700">
+              <Search className="w-4 h-4 mr-2" />
+              Search
             </Button>
-          )}
+            {searchUsername && (
+              <Button 
+                variant="outline" 
+                onClick={() => {
+                  setSearchUsername("");
+                  setPageNumber(1);
+                  setTimeout(loadUsers, 0);
+                }}
+              >
+                Clear
+              </Button>
+            )}
+          </div>
+          
+          {/* Role Filter Row */}
+          <div className="flex items-center gap-3">
+            <Filter className="w-4 h-4 text-slate-500 dark:text-slate-400" />
+            <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Filter by Role:</span>
+            <select
+              value={roleFilter}
+              onChange={(e) => setRoleFilter(e.target.value)}
+              className="h-9 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 text-sm text-slate-900 dark:text-slate-100 transition-all outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 dark:focus:ring-indigo-900"
+            >
+              <option value="All">All Roles</option>
+              <option value={UserRole.User}>👤 User</option>
+              <option value={UserRole.Admin}>🛡️ Admin</option>
+              <option value={UserRole.SuperAdmin}>⚡ SuperAdmin</option>
+            </select>
+            {roleFilter !== "All" && (
+              <span className="text-sm text-slate-600 dark:text-slate-400">
+                Showing {filteredUsers.length} of {users.length} users
+              </span>
+            )}
+          </div>
         </div>
       </div>
 
@@ -259,13 +306,24 @@ export default function UserManagementPage() {
                 <th className="px-6 py-3 text-left text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
                   Role
                 </th>
-                <th className="px-6 py-3 text-right text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+                <th className="px-12 py-3 text-right text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
                   Actions
                 </th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-200 dark:divide-slate-800">
-              {users.map((user) => (
+              {filteredUsers.length === 0 ? (
+                <tr>
+                  <td colSpan={6} className="px-6 py-12 text-center">
+                    <div className="text-slate-500 dark:text-slate-400">
+                      <Filter className="w-8 h-8 mx-auto mb-2 opacity-50" />
+                      <p className="font-medium">No users match the selected role</p>
+                      <p className="text-sm mt-1">Try selecting a different role filter</p>
+                    </div>
+                  </td>
+                </tr>
+              ) : (
+                filteredUsers.map((user) => (
                 <tr 
                   key={user.id} 
                   className="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
@@ -302,7 +360,7 @@ export default function UserManagementPage() {
                     {isSuperAdmin && user.userRole === UserRole.User && (
                       <Button
                         size="sm"
-                        onClick={() => handlePromote(user.id, user.username)}
+                        onClick={() => requestPromote(user)}
                         className="bg-green-600 hover:bg-green-700"
                         title="Promote to Admin"
                       >
@@ -313,7 +371,7 @@ export default function UserManagementPage() {
                     {isSuperAdmin && user.userRole === UserRole.Admin && (
                       <Button
                         size="sm"
-                        onClick={() => handleDemote(user.id, user.username)}
+                        onClick={() => requestDemote(user)}
                         className="bg-orange-600 hover:bg-orange-700"
                         title="Demote to User"
                       >
@@ -334,7 +392,8 @@ export default function UserManagementPage() {
                     )}
                   </td>
                 </tr>
-              ))}
+              ))
+              )}
             </tbody>
           </table>
         </div>
@@ -343,8 +402,13 @@ export default function UserManagementPage() {
         {totalPages > 1 && (
           <div className="px-6 py-5 bg-slate-50 dark:bg-slate-800 border-t border-slate-200 dark:border-slate-700">
             <div className="flex items-center justify-between">
-              <div className="text-sm text-slate-600 dark:text-slate-400">
-                Page {pageNumber} of {totalPages}
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                  Page {pageNumber} of {totalPages}
+                </span>
+                <span className="text-sm text-slate-500 dark:text-slate-400">
+                  ({(pageNumber - 1) * pageSize + 1}-{Math.min(pageNumber * pageSize, totalRecords)} of {totalRecords})
+                </span>
               </div>
               <div className="flex gap-2">
                 <Button
@@ -352,7 +416,9 @@ export default function UserManagementPage() {
                   variant="outline"
                   onClick={() => setPageNumber((p) => Math.max(1, p - 1))}
                   disabled={pageNumber === 1}
+                  className="hover:bg-indigo-50 dark:hover:bg-indigo-900/20"
                 >
+                  <ChevronLeft className="w-4 h-4 mr-1" />
                   Previous
                 </Button>
                 <Button
@@ -360,8 +426,10 @@ export default function UserManagementPage() {
                   variant="outline"
                   onClick={() => setPageNumber((p) => Math.min(totalPages, p + 1))}
                   disabled={pageNumber === totalPages}
+                  className="hover:bg-indigo-50 dark:hover:bg-indigo-900/20"
                 >
                   Next
+                  <ChevronRight className="w-4 h-4 ml-1" />
                 </Button>
               </div>
             </div>
@@ -442,6 +510,99 @@ export default function UserManagementPage() {
                 className="flex-1"
               >
                 Cancel
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+      
+      {/* Role Change Confirmation Modal */}
+      {roleChangeConfirm && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 max-w-md w-full p-6 space-y-4">
+            <div className="flex items-center gap-3">
+              <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
+                roleChangeConfirm.action === 'promote' 
+                  ? 'bg-green-100 dark:bg-green-900/30' 
+                  : 'bg-orange-100 dark:bg-orange-900/30'
+              }`}>
+                <AlertTriangle className={`w-6 h-6 ${
+                  roleChangeConfirm.action === 'promote'
+                    ? 'text-green-600 dark:text-green-400'
+                    : 'text-orange-600 dark:text-orange-400'
+                }`} />
+              </div>
+              <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100">
+                {roleChangeConfirm.action === 'promote' ? 'Promote User?' : 'Demote User?'}
+              </h2>
+            </div>
+
+            <div className="space-y-3 text-slate-600 dark:text-slate-400">
+              {roleChangeConfirm.action === 'promote' ? (
+                <>
+                  <p className="font-semibold text-slate-900 dark:text-slate-100">
+                    You are about to promote <span className="text-green-600 dark:text-green-400">"{roleChangeConfirm.user.username}"</span> to Admin.
+                  </p>
+                  <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-3 space-y-2 text-sm">
+                    <p className="font-medium text-green-800 dark:text-green-300">Admin privileges include:</p>
+                    <ul className="list-disc list-inside space-y-1 text-green-700 dark:text-green-400">
+                      <li>View and manage all users</li>
+                      <li>Edit user information</li>
+                      <li>Delete non-SuperAdmin users</li>
+                      <li>Access admin panels</li>
+                    </ul>
+                  </div>
+                  <p className="text-sm">
+                    Are you sure you want to proceed with this promotion?
+                  </p>
+                </>
+              ) : (
+                <>
+                  <p className="font-semibold text-slate-900 dark:text-slate-100">
+                    You are about to demote <span className="text-orange-600 dark:text-orange-400">"{roleChangeConfirm.user.username}"</span> to regular User.
+                  </p>
+                  <div className="bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg p-3 space-y-2 text-sm">
+                    <p className="font-medium text-orange-800 dark:text-orange-300">⚠️ This will revoke:</p>
+                    <ul className="list-disc list-inside space-y-1 text-orange-700 dark:text-orange-400">
+                      <li>User management access</li>
+                      <li>Admin panel privileges</li>
+                      <li>Ability to edit/delete users</li>
+                    </ul>
+                  </div>
+                  <p className="text-sm">
+                    This user will only have access to their own goals and categories.
+                  </p>
+                </>
+              )}
+            </div>
+
+            <div className="flex gap-3 pt-4">
+              <Button
+                onClick={() => setRoleChangeConfirm(null)}
+                variant="outline"
+                className="flex-1"
+              >
+                Cancel
+              </Button>
+              <Button
+                onClick={confirmRoleChange}
+                className={`flex-1 ${
+                  roleChangeConfirm.action === 'promote'
+                    ? 'bg-green-600 hover:bg-green-700'
+                    : 'bg-orange-600 hover:bg-orange-700'
+                }`}
+              >
+                {roleChangeConfirm.action === 'promote' ? (
+                  <>
+                    <TrendingUp className="w-4 h-4 mr-2" />
+                    Confirm Promotion
+                  </>
+                ) : (
+                  <>
+                    <TrendingDown className="w-4 h-4 mr-2" />
+                    Confirm Demotion
+                  </>
+                )}
               </Button>
             </div>
           </div>
