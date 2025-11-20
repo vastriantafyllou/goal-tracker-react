@@ -27,7 +27,7 @@ export function AuthButton() {
         onClick={handleLogout}
         className="w-30 h-9 text-base font-semibold bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 shadow-lg hover:shadow-xl transition-all"
       >
-        <LogOut className="w-5 h-5" /> Logout
+        <LogOut className="w-5 h-5" /> Sign Out
       </Button>
     );
   }
