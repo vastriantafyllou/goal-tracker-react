@@ -86,7 +86,7 @@ const Header = () => {
             {/* Welcome Message */}
             {isAuthenticated && username && (
               <span className="hidden sm:inline text-sm font-medium text-slate-700 dark:text-slate-300 mr-1">
-                Welcome, <span className="font-semibold text-indigo-600 dark:text-indigo-400">{username}</span>
+            {/* Welcome, */} <span className="font-semibold text-indigo-600 dark:text-indigo-400">{username}</span>
               </span>
             )}
             
