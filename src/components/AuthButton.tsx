@@ -32,9 +32,17 @@ export function AuthButton() {
     );
   }
 
-  // If not authenticated and on login page, hide the button
+  // If not authenticated and on login page, hide the button but maintain space
   if (isOnLoginPage) {
-    return null;
+    return (
+      <Button
+        disabled
+        className="w-30 h-9 text-base font-semibold invisible pointer-events-none"
+        aria-hidden="true"
+      >
+        <LogIn className="w-5 h-5" /> Sign In
+      </Button>
+    );
   }
 
   // Otherwise, show Login button

@@ -27,7 +27,7 @@ const Header = () => {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-slate-200/80 dark:border-slate-800/80 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md shadow-sm">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex h-16 items-center justify-between">
+        <div className="flex h-20 items-center justify-between">
           {/* Logo/Brand */}
           <Link to="/" className="flex items-center gap-3 group">
             <div className="relative">
@@ -54,15 +54,25 @@ const Header = () => {
               if (item.onlyWhenLoggedOut && isAuthenticated) return null;
               const Icon = item.icon;
               
+              // Hide Home button on HomePage but maintain space
+              const isHomeButtonOnHomePage = item.path === "/" && location.pathname === "/";
+              // Home button gets premium styling when visible
+              const isHomeButton = item.path === "/";
+              
               return (
                 <Link
                   key={item.path}
                   to={item.path}
                   className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
-                    isActivePath(item.path)
+                    isHomeButtonOnHomePage 
+                      ? "invisible pointer-events-none"
+                      : isHomeButton
+                      ? "bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-900/30 dark:to-purple-900/30 text-indigo-700 dark:text-indigo-300 shadow-sm hover:shadow-md"
+                      : isActivePath(item.path)
                       ? "bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-900/30 dark:to-purple-900/30 text-indigo-700 dark:text-indigo-300 shadow-sm"
                       : "text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
                   }`}
+                  aria-hidden={isHomeButtonOnHomePage}
                 >
                   <Icon className="w-4 h-4" strokeWidth={2.5} />
                   {item.name}
@@ -83,7 +93,7 @@ const Header = () => {
             {/* Theme Toggle Button */}
             <button
               onClick={toggleTheme}
-              className="p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-all group"
+              className="p-4 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-all group"
               aria-label="Toggle theme"
               title={theme === "light" ? "Dark theme" : "Light theme"}
             >
