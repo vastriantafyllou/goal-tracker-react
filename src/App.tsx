@@ -7,6 +7,8 @@ import GoalsPage from "@/components/pages/GoalsPage.tsx";
 import GoalDetailsPage from "@/components/pages/GoalDetailsPage.tsx";
 import CategoriesPage from "@/components/pages/CategoriesPage.tsx";
 import UserManagementPage from "@/components/pages/UserManagementPage.tsx";
+import PrivacyPolicyPage from "@/components/pages/PrivacyPolicyPage.tsx";
+import TermsPage from "@/components/pages/TermsPage.tsx";
 import ProtectedRoute from "@/components/ProtectedRoute.tsx";
 import {AuthProvider} from "@/context/AuthProvider.tsx";
 import {ThemeProvider} from "@/context/ThemeProvider.tsx";
@@ -24,6 +26,8 @@ function App() {
               <Route index element={<HomePage />} />
               <Route path="login" element={<LoginPage />} />
               <Route path="register" element={<RegisterPage />} />
+              <Route path="privacy" element={<PrivacyPolicyPage />} />
+              <Route path="terms" element={<TermsPage />} />
               {/* Fix: Redirect old /dashboard → /goals */}
               <Route path="dashboard" element={<Navigate to="/goals" replace />} />
             </Route>

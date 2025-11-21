@@ -8,7 +8,7 @@ const Footer = () => {
     <footer className="border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 mt-auto">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Main Footer Content */}
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between py-8 gap-6">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between py-10 gap-6">
           {/* Brand & Description */}
           <div className="flex flex-col gap-3 max-w-md">
             <div className="flex items-center gap-2.5">
@@ -19,7 +19,7 @@ const Footer = () => {
                 GoalTracker
               </span>
             </div>
-            <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+            <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
               Manage and achieve your goals in an easy and effective way.
             </p>
           </div>
@@ -27,18 +27,18 @@ const Footer = () => {
           {/* Links Section */}
           <div className="flex flex-col sm:flex-row gap-6 sm:gap-8 items-start sm:items-center">
             {/* Navigation Links */}
-            <div className="flex gap-6">
+            <div className="flex flex-wrap gap-6">
               <Link
-                to="/"
-                className="text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
+                to="/privacy"
+                className="text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-all hover:underline underline-offset-4"
               >
-                Home
+                Privacy Policy
               </Link>
               <Link
-                to="/goals"
-                className="text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
+                to="/terms"
+                className="text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-all hover:underline underline-offset-4"
               >
-                Goals
+                Terms of Service
               </Link>
             </div>
             
@@ -47,7 +47,7 @@ const Footer = () => {
               href="https://github.com/vastriantafyllou/goal-tracker-react"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors flex items-center gap-1.5"
+              className="text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-all hover:underline underline-offset-4 flex items-center gap-1.5"
               aria-label="View on GitHub"
             >
               <Github className="w-4 h-4" />
@@ -57,7 +57,7 @@ const Footer = () => {
         </div>
 
         {/* Bottom Bar */}
-        <div className="border-t border-slate-200 dark:border-slate-800 py-6">
+        <div className="border-t border-slate-200 dark:border-slate-800 py-10">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
             {/* Copyright */}
             <div className="text-sm text-slate-600 dark:text-slate-400 flex items-center gap-1.5">
