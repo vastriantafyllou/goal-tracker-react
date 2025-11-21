@@ -222,8 +222,12 @@ const GoalsPage = () => {
       {goals.length === 0 ? (
         <div className="bg-gradient-to-br from-white to-slate-50 dark:from-slate-900 dark:to-slate-900/50 rounded-2xl shadow-lg border border-slate-200 dark:border-slate-800 p-12 text-center">
           <div className="max-w-md mx-auto">
-            <div className="w-20 h-20 bg-gradient-to-br from-indigo-100 to-purple-100 dark:from-indigo-900/30 dark:to-purple-900/30 rounded-2xl flex items-center justify-center mx-auto mb-5 shadow-md">
-              <Plus className="w-10 h-10 text-indigo-600 dark:text-indigo-400" />
+            <div
+              className="w-20 h-20 bg-gradient-to-br from-indigo-100 to-purple-100 dark:from-indigo-900/30 dark:to-purple-900/30 rounded-2xl flex items-center justify-center mx-auto mb-5 shadow-md cursor-pointer"
+              onClick={() => navigate("/goals/new")}
+            >
+            <Plus
+                className="w-10 h-10 text-indigo-600 dark:text-indigo-400" />
             </div>
             <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-3">No goals yet</h3>
             <p className="text-slate-600 dark:text-slate-400 mb-7 leading-relaxed">Start by creating your first goal to begin tracking your progress!</p>
