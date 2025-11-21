@@ -7,14 +7,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import {
   Dialog,
   DialogContent,
   DialogHeader,
@@ -236,14 +228,14 @@ const CategoriesPage = () => {
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 max-w-7xl space-y-6">
       {/* Page Header Card */}
-      <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-lg border border-slate-200 dark:border-slate-800 p-6 transition-all">
-        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
+      <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-lg border border-slate-200 dark:border-slate-800 p-6">
+        <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg">
               <FolderPlus className="w-6 h-6 text-white" strokeWidth={2.5} />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">
+              <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">
                 My Categories
               </h1>
               <p className="text-sm text-slate-600 dark:text-slate-400">
@@ -251,37 +243,45 @@ const CategoriesPage = () => {
               </p>
             </div>
           </div>
-          <Button
-            onClick={() => setIsCreateDialogOpen(true)}
-            className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transition-all hover:scale-105"
-          >
-            <Plus className="w-4 h-4 mr-2" />
-            New Category
-          </Button>
+          <div className="text-right">
+            <div className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">
+              {categories.length}
+            </div>
+            <div className="text-xs text-slate-500 dark:text-slate-400">Total Categories</div>
+          </div>
         </div>
       </div>
 
       {/* Search, Filters, and Sort */}
       {categories.length > 0 && (
-        <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-lg border border-slate-200 dark:border-slate-800 p-4 transition-all">
+        <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-lg border border-slate-200 dark:border-slate-800 p-4">
           <div className="flex flex-col gap-4">
-            {/* Search Bar */}
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-              <Input
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search categories by name..."
-                className="pl-10 dark:bg-slate-800 dark:border-slate-700 dark:placeholder-slate-400"
-              />
-              {searchQuery && (
-                <button
-                  onClick={() => setSearchQuery("")}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"
-                >
-                  <X className="w-4 h-4" />
-                </button>
-              )}
+            {/* Search Bar with New Category Button */}
+            <div className="flex gap-3">
+              <div className="flex-1 relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                <Input
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Search categories by name..."
+                  className="pl-10 dark:bg-slate-800 dark:border-slate-700 dark:placeholder-slate-400"
+                />
+                {searchQuery && (
+                  <button
+                    onClick={() => setSearchQuery("")}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                )}
+              </div>
+              <Button
+                onClick={() => setIsCreateDialogOpen(true)}
+                className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transition-all"
+              >
+                <Plus className="w-4 h-4 mr-2" />
+                New Category
+              </Button>
             </div>
             
             {/* Filters and Sort Row */}
@@ -359,74 +359,75 @@ const CategoriesPage = () => {
         </div>
       ) : (
         <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-lg border border-slate-200 dark:border-slate-800 overflow-hidden">
-          <Table>
-            <TableHeader className="bg-gradient-to-r from-slate-50 to-slate-100/50 dark:from-slate-800/50 dark:to-slate-800/30">
-              <TableRow className="border-b-2 border-slate-200 dark:border-slate-700">
-                <TableHead className="w-[80px] font-bold text-slate-800 dark:text-slate-100 py-6 px-4">
-                  ID
-                </TableHead>
-                <TableHead className="font-bold text-slate-800 dark:text-slate-100 py-6">
-                  Name
-                </TableHead>
-                <TableHead className="font-bold text-slate-800 dark:text-slate-100 py-6">
-                  Goal Count
-                </TableHead>
-                <TableHead className="text-right font-bold text-slate-800 dark:text-slate-100 py-6 px-6">
-                  Actions
-                </TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {filteredAndSortedCategories.length === 0 ? (
-                <TableRow>
-                  <TableCell colSpan={4} className="text-center py-12">
-                    <div className="text-slate-500 dark:text-slate-400">
-                      <Filter className="w-8 h-8 mx-auto mb-2 opacity-50" />
-                      <p className="font-medium">No categories match your filters</p>
-                      <p className="text-sm mt-1">Try adjusting your search or filters</p>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ) : 
-                filteredAndSortedCategories.map((category) => (
-                <TableRow
-                  key={category.id}
-                  className="hover:bg-gradient-to-r hover:from-slate-50 hover:to-transparent dark:hover:from-slate-800/30 dark:hover:to-transparent transition-all duration-200 border-b border-slate-100 dark:border-slate-800 last:border-0"
-                >
-                  <TableCell className="font-bold text-slate-500 dark:text-slate-500 py-6">
-                    {category.id}
-                  </TableCell>
-                  <TableCell className="font-semibold text-slate-900 dark:text-slate-100 py-6">
-                    📁 {category.name}
-                  </TableCell>
-                  <TableCell className="text-slate-700 dark:text-slate-300 font-medium py-6">
-                    {category.goalCount ?? 0}
-                  </TableCell>
-                  <TableCell className="text-right py-6">
-                    <div className="flex justify-end gap-2.5">
-                      <Button
-                        variant="outline"
-                        size="icon-sm"
-                        onClick={() => handleEditClick(category)}
-                        className="hover:bg-indigo-50 dark:hover:bg-indigo-900/20 hover:border-indigo-400 dark:hover:border-indigo-600 transition-all hover:shadow-md hover:scale-105"
-                      >
-                        <Pencil className="w-4 h-4" />
-                      </Button>
-                      <Button
-                        variant="destructive"
-                        size="icon-sm"
-                        onClick={() => handleDeleteClick(category)}
-                        className="hover:shadow-lg transition-all hover:scale-105"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </Button>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ))
-              }
-            </TableBody>
-          </Table>
+          <div className={`overflow-x-auto ${filteredAndSortedCategories.length > 5 ? "max-h-[480px] overflow-y-auto scrollbar-thin scrollbar-thumb-slate-300 dark:scrollbar-thumb-slate-600 scrollbar-track-transparent" : ""}`}>
+            <table className="w-full">
+              <thead className="bg-slate-50 dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 sticky top-0 z-10">
+                <tr>
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+                    ID
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+                    Name
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+                    Goal Count
+                  </th>
+                  <th className="px-12 py-3 text-right text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+                    Actions
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-200 dark:divide-slate-800">
+                {filteredAndSortedCategories.length === 0 ? (
+                  <tr>
+                    <td colSpan={4} className="px-6 py-12 text-center">
+                      <div className="text-slate-500 dark:text-slate-400">
+                        <Filter className="w-8 h-8 mx-auto mb-2 opacity-50" />
+                        <p className="font-medium">No categories match your filters</p>
+                        <p className="text-sm mt-1">Try adjusting your search or filters</p>
+                      </div>
+                    </td>
+                  </tr>
+                ) : (
+                  filteredAndSortedCategories.map((category) => (
+                    <tr
+                      key={category.id}
+                      className="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
+                    >
+                      <td className="px-6 py-5 whitespace-nowrap text-sm text-slate-900 dark:text-slate-100">
+                        #{category.id}
+                      </td>
+                      <td className="px-6 py-5 whitespace-nowrap text-sm font-semibold text-slate-900 dark:text-slate-100">
+                        📁 {category.name}
+                      </td>
+                      <td className="px-6 py-5 whitespace-nowrap text-sm text-slate-600 dark:text-slate-400">
+                        {category.goalCount ?? 0}
+                      </td>
+                      <td className="px-6 py-5 whitespace-nowrap text-right text-sm space-x-2">
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => handleEditClick(category)}
+                          className="hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-500"
+                          title="Edit"
+                        >
+                          <Pencil className="w-4 h-4" />
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="destructive"
+                          onClick={() => handleDeleteClick(category)}
+                          title="Delete"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
 

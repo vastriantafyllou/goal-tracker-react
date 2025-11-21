@@ -5,6 +5,14 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
 import { UserRole, type UserReadOnly, type UserUpdateFields } from "@/schemas/users";
 import { 
   getAllUsers, 
@@ -48,6 +56,7 @@ export default function UserManagementPage() {
     user: UserReadOnly;
     action: 'promote' | 'demote';
   } | null>(null);
+  const [deleteConfirmUser, setDeleteConfirmUser] = useState<UserReadOnly | null>(null);
 
   const isSuperAdmin = userRole === UserRole.SuperAdmin;
   const isAdmin = userRole === UserRole.Admin || isSuperAdmin;
@@ -87,14 +96,17 @@ export default function UserManagementPage() {
     loadUsers();
   };
 
-  const handleDelete = async (id: number, username: string) => {
-    if (!confirm(`Are you sure you want to delete user "${username}"?`)) {
-      return;
-    }
-
+  const handleDeleteClick = (user: UserReadOnly) => {
+    setDeleteConfirmUser(user);
+  };
+  
+  const confirmDelete = async () => {
+    if (!deleteConfirmUser) return;
+    
     try {
-      await deleteUser(id);
-      toast.success(`User "${username}" deleted successfully`);
+      await deleteUser(deleteConfirmUser.id);
+      toast.success(`User "${deleteConfirmUser.username}" deleted successfully`);
+      setDeleteConfirmUser(null);
       loadUsers();
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Failed to delete");
@@ -287,9 +299,9 @@ export default function UserManagementPage() {
 
       {/* Users Table */}
       <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-lg border border-slate-200 dark:border-slate-800 overflow-hidden">
-        <div className="overflow-x-auto">
+        <div className={`overflow-x-auto ${filteredUsers.length > 5 ? "max-h-[480px] overflow-y-auto scrollbar-thin scrollbar-thumb-slate-300 dark:scrollbar-thumb-slate-600 scrollbar-track-transparent" : ""}`}>
           <table className="w-full">
-            <thead className="bg-slate-50 dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700">
+            <thead className="bg-slate-50 dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 sticky top-0 z-10">
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
                   ID
@@ -328,10 +340,10 @@ export default function UserManagementPage() {
                   key={user.id} 
                   className="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
                 >
-                  <td className="px-6 py-5 whitespace-nowrap text-sm font-medium text-slate-900 dark:text-slate-100">
+                  <td className="px-6 py-5 whitespace-nowrap text-sm text-slate-900 dark:text-slate-100">
                     #{user.id}
                   </td>
-                  <td className="px-6 py-5 whitespace-nowrap text-sm text-slate-700 dark:text-slate-300">
+                  <td className="px-6 py-5 whitespace-nowrap text-sm font-semibold text-slate-700 dark:text-slate-300">
                     {user.username}
                   </td>
                   <td className="px-6 py-5 whitespace-nowrap text-sm text-slate-600 dark:text-slate-400">
@@ -384,7 +396,7 @@ export default function UserManagementPage() {
                       <Button
                         size="sm"
                         variant="destructive"
-                        onClick={() => handleDelete(user.id, user.username)}
+                        onClick={() => handleDeleteClick(user)}
                         title="Delete"
                       >
                         <Trash2 className="w-4 h-4" />
@@ -608,6 +620,63 @@ export default function UserManagementPage() {
           </div>
         </div>
       )}
+      
+      {/* Delete User Confirmation Dialog */}
+      <Dialog open={!!deleteConfirmUser} onOpenChange={() => setDeleteConfirmUser(null)}>
+        <DialogContent className="sm:max-w-[500px] bg-white dark:bg-slate-900">
+          <DialogHeader>
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 rounded-xl flex items-center justify-center bg-red-100 dark:bg-red-900/30">
+                <AlertTriangle className="w-6 h-6 text-red-600 dark:text-red-400" />
+              </div>
+              <DialogTitle className="text-2xl font-bold text-slate-900 dark:text-slate-100">
+                Delete User?
+              </DialogTitle>
+            </div>
+            <DialogDescription className="text-slate-600 dark:text-slate-400 pt-4">
+              <div className="space-y-3">
+                <p className="font-semibold text-red-600 dark:text-red-400">
+                  ⚠️ Warning: This action cannot be undone.
+                </p>
+                <p>
+                  You are about to permanently delete user{" "}
+                  <span className="font-semibold text-slate-900 dark:text-slate-100">
+                    "{deleteConfirmUser?.username}"
+                  </span>
+                  {deleteConfirmUser?.userRole === UserRole.Admin && (
+                    <span className="text-orange-600 dark:text-orange-400 font-semibold"> (Admin)</span>
+                  )}
+                  .
+                </p>
+                <p className="text-sm">
+                  All associated data and permissions will be removed. Are you sure you want to proceed?
+                </p>
+              </div>
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="gap-2">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => setDeleteConfirmUser(null)}
+              className="h-11 px-6"
+            >
+              Cancel
+            </Button>
+            <Button
+              type="button"
+              variant="destructive"
+              onClick={confirmDelete}
+              className="h-11 px-6 shadow-lg hover:shadow-xl transition-all"
+            >
+              <span className="flex items-center gap-2">
+                <AlertTriangle className="w-4 h-4" />
+                Delete User
+              </span>
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

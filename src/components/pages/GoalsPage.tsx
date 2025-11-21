@@ -1,16 +1,16 @@
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table"
 import {useEffect, useState, useMemo} from "react";
 import {deleteGoal, getGoals} from "@/services/api.goals.ts";
 import type {Goal} from "@/schemas/goal.ts";
 import {Button} from "@/components/ui/button.tsx";
-import {Pencil, Trash2, Plus, Target, Search, Filter, X, CheckCircle2, Clock, AlertCircle} from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import {Pencil, Trash2, Plus, Target, Search, Filter, X, AlertTriangle} from "lucide-react";
 import {useNavigate} from "react-router";
 import {toast} from "sonner";
 import {Input} from "@/components/ui/input.tsx";
@@ -26,6 +26,7 @@ const GoalsPage = () => {
   const [categoryFilter, setCategoryFilter] = useState<string>("All");
   const [dueDateFilter, setDueDateFilter] = useState<string>("All");
   const [sortBy, setSortBy] = useState<string>("dueDate-asc");
+  const [deleteConfirmGoal, setDeleteConfirmGoal] = useState<Goal | null>(null);
 
   const loadGoals = async () => {
     try {
@@ -40,20 +41,25 @@ const GoalsPage = () => {
     }
   };
 
-  const handleDelete = async (id: number) => {
-    if (!confirm("Are you sure you want to delete this goal?")) return;
+  const handleDeleteClick = (goal: Goal) => {
+    setDeleteConfirmGoal(goal);
+  };
+  
+  const confirmDelete = async () => {
+    if (!deleteConfirmGoal) return;
     
     try {
-      await deleteGoal(id);
+      await deleteGoal(deleteConfirmGoal.id);
       toast.success("Goal deleted successfully");
+      setDeleteConfirmGoal(null);
       // Refresh the list
-      setGoals(goals.filter(goal => goal.id !== id));
+      setGoals(goals.filter(goal => goal.id !== deleteConfirmGoal.id));
     } catch (error) {
       toast.error(
         error instanceof Error ? error.message : "Failed to delete goal"
       );
     }
-  }
+  };
 
   useEffect(() => {
     loadGoals();
@@ -189,60 +195,27 @@ const GoalsPage = () => {
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 max-w-7xl space-y-6">
       {/* Page Header Card */}
-      <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-lg border border-slate-200 dark:border-slate-800 p-6 transition-all">
-        <div className="flex flex-col gap-4">
-          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg">
-                <Target className="w-6 h-6 text-white" strokeWidth={2.5} />
-              </div>
-              <div>
-                <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">My Goals</h1>
-                <p className="text-sm text-slate-600 dark:text-slate-400">Manage and track your personal goals</p>
-              </div>
+      <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-lg border border-slate-200 dark:border-slate-800 p-6">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg">
+              <Target className="w-6 h-6 text-white" strokeWidth={2.5} />
             </div>
-            <Button 
-              onClick={() => navigate("/goals/new")} 
-              className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transition-all hover:scale-105"
-            >
-              <Plus className="w-4 h-4 mr-2" />
-              New Goal
-            </Button>
+            <div>
+              <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">
+                My Goals
+              </h1>
+              <p className="text-sm text-slate-600 dark:text-slate-400">
+                Manage and track your personal goals
+              </p>
+            </div>
           </div>
-          
-          {/* Progress Stats */}
-          {goals.length > 0 && (
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-4 border-t border-slate-200 dark:border-slate-800">
-              <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-slate-50 dark:bg-slate-800/50">
-                <Target className="w-4 h-4 text-slate-600 dark:text-slate-400" />
-                <div>
-                  <div className="text-xs text-slate-500 dark:text-slate-400">Total</div>
-                  <div className="text-lg font-bold text-slate-900 dark:text-slate-100">{stats.total}</div>
-                </div>
-              </div>
-              <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-blue-50 dark:bg-blue-900/20">
-                <Clock className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-                <div>
-                  <div className="text-xs text-blue-600 dark:text-blue-400">In Progress</div>
-                  <div className="text-lg font-bold text-blue-700 dark:text-blue-300">{stats.inProgress}</div>
-                </div>
-              </div>
-              <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-green-50 dark:bg-green-900/20">
-                <CheckCircle2 className="w-4 h-4 text-green-600 dark:text-green-400" />
-                <div>
-                  <div className="text-xs text-green-600 dark:text-green-400">Completed</div>
-                  <div className="text-lg font-bold text-green-700 dark:text-green-300">{stats.completed}</div>
-                </div>
-              </div>
-              <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-red-50 dark:bg-red-900/20">
-                <AlertCircle className="w-4 h-4 text-red-600 dark:text-red-400" />
-                <div>
-                  <div className="text-xs text-red-600 dark:text-red-400">Overdue</div>
-                  <div className="text-lg font-bold text-red-700 dark:text-red-300">{stats.overdue}</div>
-                </div>
-              </div>
+          <div className="text-right">
+            <div className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">
+              {stats.total}
             </div>
-          )}
+            <div className="text-xs text-slate-500 dark:text-slate-400">Total Goals</div>
+          </div>
         </div>
       </div>
       
@@ -266,25 +239,34 @@ const GoalsPage = () => {
       ) : (
         <>
           {/* Search and Filters Bar */}
-          <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-lg border border-slate-200 dark:border-slate-800 p-4 transition-all">
+          <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-lg border border-slate-200 dark:border-slate-800 p-4">
             <div className="flex flex-col gap-4">
-              {/* Search Bar */}
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-                <Input
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search goals by title..."
-                  className="pl-10 dark:bg-slate-800 dark:border-slate-700 dark:placeholder-slate-400"
-                />
-                {searchQuery && (
-                  <button
-                    onClick={() => setSearchQuery("")}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"
-                  >
-                    <X className="w-4 h-4" />
-                  </button>
-                )}
+              {/* Search Bar with New Goal Button */}
+              <div className="flex gap-3">
+                <div className="flex-1 relative">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                  <Input
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="Search goals by title..."
+                    className="pl-10 dark:bg-slate-800 dark:border-slate-700 dark:placeholder-slate-400"
+                  />
+                  {searchQuery && (
+                    <button
+                      onClick={() => setSearchQuery("")}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  )}
+                </div>
+                <Button 
+                  onClick={() => navigate("/goals/new")} 
+                  className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transition-all"
+                >
+                  <Plus className="w-4 h-4 mr-2" />
+                  New Goal
+                </Button>
               </div>
               
               {/* Filters and Sorting Row */}
@@ -372,85 +354,156 @@ const GoalsPage = () => {
         
         {/* Goals Table */}
         <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-lg border border-slate-200 dark:border-slate-800 overflow-hidden">
-          <Table>
-            <TableHeader className="bg-gradient-to-r from-slate-50 to-slate-100/50 dark:from-slate-800/50 dark:to-slate-800/30">
-              <TableRow className="border-b-2 border-slate-200 dark:border-slate-700">
-                <TableHead className="w-[80px] font-bold text-slate-800 dark:text-slate-100 py-6 px-4">ID</TableHead>
-                <TableHead className="font-bold text-slate-800 dark:text-slate-100 py-6">Title</TableHead>
-                <TableHead className="font-bold text-slate-800 dark:text-slate-100 py-6">Status</TableHead>
-                <TableHead className="font-bold text-slate-800 dark:text-slate-100 py-6">Due Date</TableHead>
-                <TableHead className="font-bold text-slate-800 dark:text-slate-100 py-6">Category</TableHead>
-                <TableHead className="text-right font-bold text-slate-800 dark:text-slate-100 py-6 px-6">Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {filteredAndSortedGoals.length === 0 ? (
-                <TableRow>
-                  <TableCell colSpan={6} className="text-center py-12">
-                    <div className="text-slate-500 dark:text-slate-400">
-                      <Filter className="w-8 h-8 mx-auto mb-2 opacity-50" />
-                      <p className="font-medium">No goals match your filters</p>
-                      <p className="text-sm mt-1">Try adjusting your search or filters</p>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ) : 
-                filteredAndSortedGoals.map((goal) => (
-                <TableRow 
-                  key={goal.id} 
-                  className="hover:bg-gradient-to-r hover:from-slate-50 hover:to-transparent dark:hover:from-slate-800/30 dark:hover:to-transparent transition-all duration-200 border-b border-slate-100 dark:border-slate-800 last:border-0"
-                >
-                  <TableCell className="font-bold text-slate-500 dark:text-slate-500 py-6">{goal.id}</TableCell>
-                  <TableCell className="font-semibold text-slate-900 dark:text-slate-100 py-6">{goal.title}</TableCell>
-                  <TableCell className="py-6">
-                    <span className={`inline-flex items-center px-3.5 py-1.5 rounded-full text-xs font-bold shadow-sm ${
-                      goal.status === "Completed" ? "bg-gradient-to-r from-green-100 to-green-50 text-green-800 dark:from-green-900/30 dark:to-green-900/20 dark:text-green-400" :
-                      goal.status === "Cancelled" ? "bg-gradient-to-r from-red-100 to-red-50 text-red-800 dark:from-red-900/30 dark:to-red-900/20 dark:text-red-400" :
-                      "bg-gradient-to-r from-blue-100 to-blue-50 text-blue-800 dark:from-blue-900/30 dark:to-blue-900/20 dark:text-blue-400"
-                    }`}>
-                      {goal.status}
-                    </span>
-                  </TableCell>
-                  <TableCell className="text-slate-700 dark:text-slate-300 font-medium py-6">
-                    {goal.dueDate ? new Date(goal.dueDate).toLocaleDateString() : "—"}
-                  </TableCell>
-                  <TableCell className="text-slate-700 dark:text-slate-300 py-6">
-                    {goal.categoryName ? (
-                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-gradient-to-r from-indigo-50 to-purple-50 text-indigo-700 dark:from-indigo-900/30 dark:to-purple-900/30 dark:text-indigo-300">
-                        📁 {goal.categoryName}
-                      </span>
-                    ) : (
-                      <span className="text-slate-400 dark:text-slate-600 text-sm italic">No Category</span>
-                    )}
-                  </TableCell>
-                  <TableCell className="text-right py-6">
-                    <div className="flex justify-end gap-2.5">
-                      <Button
-                        variant="outline"
-                        size="icon-sm"
-                        onClick={() => navigate(`/goals/${goal.id}`)}
-                        className="hover:bg-indigo-50 dark:hover:bg-indigo-900/20 hover:border-indigo-400 dark:hover:border-indigo-600 transition-all hover:shadow-md hover:scale-105"
-                      >
-                        <Pencil className="w-4 h-4"/>
-                      </Button>
-                      <Button
-                        variant="destructive"
-                        size="icon-sm"
-                        onClick={() => handleDelete(goal.id)}
-                        className="hover:shadow-lg transition-all hover:scale-105"
-                      >
-                        <Trash2 className="w-4 h-4"/>
-                      </Button>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ))
-              }
-            </TableBody>
-          </Table>
+          <div className={`overflow-x-auto ${filteredAndSortedGoals.length > 5 ? "max-h-[480px] overflow-y-auto scrollbar-thin scrollbar-thumb-slate-300 dark:scrollbar-thumb-slate-600 scrollbar-track-transparent" : ""}`}>
+            <table className="w-full">
+              <thead className="bg-slate-50 dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 sticky top-0 z-10">
+                <tr>
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+                    ID
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+                    Title
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+                    Status
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+                    Due Date
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+                    Category
+                  </th>
+                  <th className="px-12 py-3 text-right text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+                    Actions
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-200 dark:divide-slate-800">
+                {filteredAndSortedGoals.length === 0 ? (
+                  <tr>
+                    <td colSpan={6} className="px-6 py-12 text-center">
+                      <div className="text-slate-500 dark:text-slate-400">
+                        <Filter className="w-8 h-8 mx-auto mb-2 opacity-50" />
+                        <p className="font-medium">No goals match your filters</p>
+                        <p className="text-sm mt-1">Try adjusting your search or filters</p>
+                      </div>
+                    </td>
+                  </tr>
+                ) : (
+                  filteredAndSortedGoals.map((goal) => (
+                    <tr 
+                      key={goal.id} 
+                      className="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
+                    >
+                      <td className="px-6 py-5 whitespace-nowrap text-sm text-slate-900 dark:text-slate-100">
+                        #{goal.id}
+                      </td>
+                      <td className="px-6 py-5 whitespace-nowrap text-sm font-semibold text-slate-900 dark:text-slate-100">
+                        {goal.title}
+                      </td>
+                      <td className="px-6 py-5 whitespace-nowrap">
+                        <span className={`inline-flex items-center px-3.5 py-1.5 rounded-full text-xs font-bold shadow-sm ${
+                          goal.status === "Completed" ? "bg-gradient-to-r from-green-100 to-green-50 text-green-800 dark:from-green-900/30 dark:to-green-900/20 dark:text-green-400" :
+                          goal.status === "Cancelled" ? "bg-gradient-to-r from-red-100 to-red-50 text-red-800 dark:from-red-900/30 dark:to-red-900/20 dark:text-red-400" :
+                          "bg-gradient-to-r from-blue-100 to-blue-50 text-blue-800 dark:from-blue-900/30 dark:to-blue-900/20 dark:text-blue-400"
+                        }`}>
+                          {goal.status}
+                        </span>
+                      </td>
+                      <td className="px-6 py-5 whitespace-nowrap text-sm text-slate-600 dark:text-slate-400">
+                        {goal.dueDate ? new Date(goal.dueDate).toLocaleDateString() : "—"}
+                      </td>
+                      <td className="px-6 py-5 whitespace-nowrap font-semibold text-sm">
+                        {goal.categoryName ? (
+                          <span className="text-slate-700 font-semibold dark:text-slate-300">
+                            📁 {goal.categoryName}
+                          </span>
+                        ) : (
+                          <span className="text-slate-400 dark:text-slate-600 italic">No Category</span>
+                        )}
+                      </td>
+                      <td className="px-6 py-5 whitespace-nowrap text-right text-sm space-x-2">
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => navigate(`/goals/${goal.id}`)}
+                          className="hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-500"
+                          title="Edit"
+                        >
+                          <Pencil className="w-4 h-4" />
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="destructive"
+                          onClick={() => handleDeleteClick(goal)}
+                          title="Delete"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
         </>
       )}
+      
+      {/* Delete Goal Confirmation Dialog */}
+      <Dialog open={!!deleteConfirmGoal} onOpenChange={() => setDeleteConfirmGoal(null)}>
+        <DialogContent className="sm:max-w-[500px] bg-white dark:bg-slate-900">
+          <DialogHeader>
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 rounded-xl flex items-center justify-center bg-red-100 dark:bg-red-900/30">
+                <AlertTriangle className="w-6 h-6 text-red-600 dark:text-red-400" />
+              </div>
+              <DialogTitle className="text-2xl font-bold text-slate-900 dark:text-slate-100">
+                Delete Goal?
+              </DialogTitle>
+            </div>
+            <DialogDescription className="text-slate-600 dark:text-slate-400 pt-4">
+              <div className="space-y-3">
+                <p className="font-semibold text-red-600 dark:text-red-400">
+                  ⚠️ Warning: This action cannot be undone.
+                </p>
+                <p>
+                  You are about to permanently delete the goal{" "}
+                  <span className="font-semibold text-slate-900 dark:text-slate-100">
+                    "{deleteConfirmGoal?.title}"
+                  </span>
+                  .
+                </p>
+                <p className="text-sm">
+                  All progress and data associated with this goal will be permanently removed. Are you sure you want to proceed?
+                </p>
+              </div>
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="gap-2">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => setDeleteConfirmGoal(null)}
+              className="h-11 px-6"
+            >
+              Cancel
+            </Button>
+            <Button
+              type="button"
+              variant="destructive"
+              onClick={confirmDelete}
+              className="h-11 px-6 shadow-lg hover:shadow-xl transition-all"
+            >
+              <span className="flex items-center gap-2">
+                <AlertTriangle className="w-4 h-4" />
+                Delete Goal
+              </span>
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }
