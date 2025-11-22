@@ -50,6 +50,7 @@ export default function UserManagementPage() {
   const [totalRecords, setTotalRecords] = useState(0);
   const [searchUsername, setSearchUsername] = useState("");
   const [roleFilter, setRoleFilter] = useState<string>("All");
+  const [currentPage, setCurrentPage] = useState(1);
   const [editingUser, setEditingUser] = useState<UserReadOnly | null>(null);
   const [editForm, setEditForm] = useState<UserUpdateFields>({});
   const [roleChangeConfirm, setRoleChangeConfirm] = useState<{
@@ -199,6 +200,21 @@ export default function UserManagementPage() {
     return users.filter(user => user.userRole === roleFilter);
   }, [users, roleFilter]);
 
+  // Client-side pagination (5 users per page)
+  const USERS_PER_PAGE = 5;
+  const totalClientPages = Math.ceil(filteredUsers.length / USERS_PER_PAGE);
+  
+  const paginatedUsers = useMemo(() => {
+    const startIndex = (currentPage - 1) * USERS_PER_PAGE;
+    const endIndex = startIndex + USERS_PER_PAGE;
+    return filteredUsers.slice(startIndex, endIndex);
+  }, [filteredUsers, currentPage]);
+
+  // Reset to page 1 when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [roleFilter, users]);
+
   const totalPages = Math.ceil(totalRecords / pageSize);
 
   if (loading && users.length === 0) {
@@ -299,7 +315,7 @@ export default function UserManagementPage() {
 
       {/* Users Table */}
       <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-lg border border-slate-200 dark:border-slate-800 overflow-hidden">
-        <div className={`overflow-x-auto ${filteredUsers.length > 5 ? "max-h-[480px] overflow-y-auto scrollbar-thin scrollbar-thumb-slate-300 dark:scrollbar-thumb-slate-600 scrollbar-track-transparent" : ""}`}>
+        <div className="overflow-x-auto">
           <table className="w-full">
             <thead className="bg-slate-50 dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 sticky top-0 z-10">
               <tr>
@@ -324,7 +340,7 @@ export default function UserManagementPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-200 dark:divide-slate-800">
-              {filteredUsers.length === 0 ? (
+              {paginatedUsers.length === 0 ? (
                 <tr>
                   <td colSpan={6} className="px-6 py-12 text-center">
                     <div className="text-slate-500 dark:text-slate-400">
@@ -335,7 +351,7 @@ export default function UserManagementPage() {
                   </td>
                 </tr>
               ) : (
-                filteredUsers.map((user) => (
+                paginatedUsers.map((user) => (
                 <tr 
                   key={user.id} 
                   className="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
@@ -410,7 +426,40 @@ export default function UserManagementPage() {
           </table>
         </div>
 
-        {/* Pagination */}
+        {/* Client-side Pagination */}
+        {totalClientPages > 1 && (
+          <div className="px-6 py-4 bg-slate-50 dark:bg-slate-800 border-t border-slate-200 dark:border-slate-700">
+            <div className="flex items-center justify-center gap-3">
+              {currentPage > 1 && (
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => setCurrentPage((p) => p - 1)}
+                  className="hover:bg-indigo-50 dark:hover:bg-indigo-900/20"
+                >
+                  <ChevronLeft className="w-4 h-4 mr-1" />
+                  Prev
+                </Button>
+              )}
+              <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                Page {currentPage} of {totalClientPages}
+              </span>
+              {currentPage < totalClientPages && (
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => setCurrentPage((p) => p + 1)}
+                  className="hover:bg-indigo-50 dark:hover:bg-indigo-900/20"
+                >
+                  Next
+                  <ChevronRight className="w-4 h-4 ml-1" />
+                </Button>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Server-side Pagination */}
         {totalPages > 1 && (
           <div className="px-6 py-5 bg-slate-50 dark:bg-slate-800 border-t border-slate-200 dark:border-slate-700">
             <div className="flex items-center justify-between">
