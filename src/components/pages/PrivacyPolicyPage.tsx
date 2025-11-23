@@ -6,7 +6,7 @@ export default function PrivacyPolicyPage() {
       {/* Header */}
       <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-lg border border-slate-200 dark:border-slate-800 p-8 mb-6">
         <div className="flex items-center gap-4 mb-4">
-          <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg">
+          <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-500 to-sky-600 flex items-center justify-center shadow-lg">
             <Shield className="w-7 h-7 text-white" strokeWidth={2.5} />
           </div>
           <div>
@@ -26,7 +26,7 @@ export default function PrivacyPolicyPage() {
         {/* Section 1 */}
         <section className="space-y-3">
           <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
-            <span className="text-indigo-600 dark:text-indigo-400">1.</span>
+            <span className="text-blue-600 dark:text-blue-400">1.</span>
             Introduction
           </h2>
           <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
@@ -37,7 +37,7 @@ export default function PrivacyPolicyPage() {
         {/* Section 2 */}
         <section className="space-y-3">
           <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
-            <span className="text-indigo-600 dark:text-indigo-400">2.</span>
+            <span className="text-blue-600 dark:text-blue-400">2.</span>
             Information Collected
           </h2>
           <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
@@ -48,7 +48,7 @@ export default function PrivacyPolicyPage() {
         {/* Section 3 */}
         <section className="space-y-3">
           <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
-            <span className="text-indigo-600 dark:text-indigo-400">3.</span>
+            <span className="text-blue-600 dark:text-blue-400">3.</span>
             How Data Is Used
           </h2>
           <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
@@ -59,7 +59,7 @@ export default function PrivacyPolicyPage() {
         {/* Section 4 */}
         <section className="space-y-3">
           <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
-            <span className="text-indigo-600 dark:text-indigo-400">4.</span>
+            <span className="text-blue-600 dark:text-blue-400">4.</span>
             Data Sharing
           </h2>
           <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
@@ -70,7 +70,7 @@ export default function PrivacyPolicyPage() {
         {/* Section 5 */}
         <section className="space-y-3">
           <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
-            <span className="text-indigo-600 dark:text-indigo-400">5.</span>
+            <span className="text-blue-600 dark:text-blue-400">5.</span>
             Data Removal
           </h2>
           <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
@@ -81,7 +81,7 @@ export default function PrivacyPolicyPage() {
         {/* Section 6 */}
         <section className="space-y-3">
           <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
-            <span className="text-indigo-600 dark:text-indigo-400">6.</span>
+            <span className="text-blue-600 dark:text-blue-400">6.</span>
             "As-Is" Disclaimer
           </h2>
           <p className="text-slate-700 dark:text-slate-300 leading-relaxed">

@@ -12,10 +12,10 @@ const Footer = () => {
           {/* Brand & Description */}
           <div className="flex flex-col gap-3 max-w-md">
             <div className="flex items-center gap-2.5">
-              <div className="rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 p-2 shadow-sm">
+              <div className="rounded-lg bg-gradient-to-br from-blue-500 to-sky-600 p-2 shadow-sm">
                 <Target className="w-4 h-4 text-white" strokeWidth={2.5} />
               </div>
-              <span className="text-lg font-bold bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400 bg-clip-text text-transparent">
+              <span className="text-lg font-bold bg-gradient-to-r from-blue-600 to-sky-600 dark:from-blue-400 dark:to-sky-400 bg-clip-text text-transparent">
                 GoalTracker
               </span>
             </div>
@@ -30,13 +30,13 @@ const Footer = () => {
             <div className="flex flex-wrap gap-6">
               <Link
                 to="/privacy"
-                className="text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-all hover:underline underline-offset-4"
+                className="text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-all hover:underline underline-offset-4"
               >
                 Privacy Policy
               </Link>
               <Link
                 to="/terms"
-                className="text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-all hover:underline underline-offset-4"
+                className="text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-all hover:underline underline-offset-4"
               >
                 Terms of Service
               </Link>
@@ -47,7 +47,7 @@ const Footer = () => {
               href="https://github.com/vastriantafyllou/goal-tracker-react"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-all hover:underline underline-offset-4 flex items-center gap-1.5"
+              className="text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-all hover:underline underline-offset-4 flex items-center gap-1.5"
               aria-label="View on GitHub"
             >
               <Github className="w-4 h-4" />

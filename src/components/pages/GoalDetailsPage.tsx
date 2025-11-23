@@ -118,7 +118,7 @@ const GoalDetailsPage = () => {
       {/* Page Header Card */}
       <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-lg border border-slate-200 dark:border-slate-800 p-6 transition-all">
         <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg">
+          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-sky-600 flex items-center justify-center shadow-lg">
             {isEdit ? (
               <Edit className="w-6 h-6 text-white" strokeWidth={2.5} />
             ) : (
@@ -203,7 +203,7 @@ const GoalDetailsPage = () => {
             <button
               type="button"
               onClick={() => setShowNewCategoryForm(!showNewCategoryForm)}
-              className="text-xs flex items-center gap-1.5 text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 font-semibold hover:underline transition-colors"
+              className="text-xs flex items-center gap-1.5 text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-semibold hover:underline transition-colors cursor-pointer"
             >
               <Plus className="w-3.5 h-3.5" />
               New Category
@@ -211,7 +211,7 @@ const GoalDetailsPage = () => {
           </div>
           
           {showNewCategoryForm && (
-            <div className="p-4 bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20 rounded-xl border-2 border-indigo-200 dark:border-indigo-800 space-y-3 shadow-sm">
+            <div className="p-4 bg-gradient-to-br from-blue-50 to-sky-50 dark:from-blue-900/20 dark:to-sky-900/20 rounded-xl border-2 border-blue-200 dark:border-blue-800 space-y-3 shadow-sm">
               <div className="flex gap-2">
                 <Input
                   value={newCategoryName}
@@ -231,7 +231,7 @@ const GoalDetailsPage = () => {
                   size="sm"
                   onClick={handleCreateCategory}
                   disabled={!newCategoryName.trim() || creatingCategory}
-                  className="bg-indigo-600 hover:bg-indigo-700 text-white shadow-md hover:shadow-lg transition-all"
+                  className="bg-blue-600 hover:bg-blue-700 text-white shadow-md hover:shadow-lg transition-all cursor-pointer"
                 >
                   {creatingCategory ? (
                     <span className="animate-spin">⏳</span>
@@ -253,7 +253,7 @@ const GoalDetailsPage = () => {
             {...register("goalCategoryId", { 
               setValueAs: (value) => value === "" ? undefined : Number(value)
             })}
-            className="w-full h-11 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-2 text-sm text-slate-900 dark:text-slate-100 shadow-sm transition-all outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 dark:focus:ring-indigo-900"
+            className="w-full h-11 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-2 text-sm text-slate-900 dark:text-slate-100 shadow-sm transition-all outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-900"
             disabled={loadingCategories}
           >
             <option value="">-- Select Category (Optional) --</option>
@@ -304,7 +304,7 @@ const GoalDetailsPage = () => {
           <Button 
             type="submit" 
             disabled={isSubmitting}
-            className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transition-all hover:scale-105 h-11 px-6"
+            className="bg-gradient-to-r from-blue-600 to-sky-600 hover:from-blue-700 hover:to-sky-700 text-white shadow-lg hover:shadow-xl transition-all hover:scale-105 h-11 px-6 cursor-pointer"
           >
             {isSubmitting ? (
               <span className="flex items-center gap-2">
@@ -318,7 +318,7 @@ const GoalDetailsPage = () => {
             type="button" 
             variant="outline" 
             onClick={() => navigate("/goals")}
-            className="h-11 px-6 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+            className="h-11 px-6 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
           >
             Cancel
           </Button>

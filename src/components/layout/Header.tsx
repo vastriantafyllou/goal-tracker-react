@@ -31,13 +31,13 @@ const Header = () => {
           {/* Logo/Brand */}
           <Link to="/" className="flex items-center gap-3 group">
             <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl blur-sm opacity-60 group-hover:opacity-80 transition-opacity"></div>
-              <div className="relative rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 p-2.5 transition-transform group-hover:scale-105 shadow-lg">
+              <div className="absolute inset-0 from-blue-500 to-sky-600 rounded-xl blur-sm opacity-60 group-hover:opacity-80 transition-opacity"></div>
+              <div className="relative rounded-xl bg-gradient-to-br from-blue-500 to-sky-600 p-2.5 transition-transform group-hover:scale-105 shadow-lg">
                 <Target className="w-5 h-5 text-white" strokeWidth={2.5} />
               </div>
             </div>
             <div className="flex flex-col">
-              <span className="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400 bg-clip-text text-transparent leading-tight">
+              <span className="text-xl font-bold bg-gradient-to-r from-blue-600 to-sky-600 dark:from-blue-400 dark:to-sky-400 bg-clip-text text-transparent leading-tight">
                 GoalTracker
               </span>
               <span className="text-[10px] text-slate-500 dark:text-slate-400 font-medium tracking-wide">
@@ -67,9 +67,9 @@ const Header = () => {
                     isHomeButtonOnHomePage 
                       ? "invisible pointer-events-none"
                       : isHomeButton
-                      ? "bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-900/30 dark:to-purple-900/30 text-indigo-700 dark:text-indigo-300 shadow-sm hover:shadow-md"
+                      ? "bg-gradient-to-r from-blue-50 to-sky-50 dark:from-blue-900/30 dark:to-sky-900/30 text-blue-700 dark:text-blue-300 shadow-sm hover:shadow-md"
                       : isActivePath(item.path)
-                      ? "bg-gradient-to-r from-indigo-50 to-purple-50 dark:from-indigo-900/30 dark:to-purple-900/30 text-indigo-700 dark:text-indigo-300 shadow-sm"
+                      ? "bg-gradient-to-r from-blue-50 to-sky-50 dark:from-blue-900/30 dark:to-sky-900/30 text-blue-700 dark:text-blue-300 shadow-sm"
                       : "text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
                   }`}
                   aria-hidden={isHomeButtonOnHomePage}
@@ -86,21 +86,21 @@ const Header = () => {
             {/* Welcome Message */}
             {isAuthenticated && username && (
               <span className="hidden sm:inline text-sm font-medium text-slate-700 dark:text-slate-300 mr-1">
-            {/* Welcome, */} <span className="font-semibold text-indigo-600 dark:text-indigo-400">{username}</span>
+            {/* Welcome, */} <span className="font-semibold text-blue-600 dark:text-blue-400">{username}</span>
               </span>
             )}
             
             {/* Theme Toggle Button */}
             <button
               onClick={toggleTheme}
-              className="p-4 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-all group"
+              className="p-4 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-all group cursor-pointer"
               aria-label="Toggle theme"
               title={theme === "light" ? "Dark theme" : "Light theme"}
             >
               {theme === "light" ? (
-                <Moon className="w-5 h-5 text-slate-600 group-hover:text-indigo-600 transition-colors" strokeWidth={2} />
+                <Moon className="w-5 h-5 text-slate-600 group-hover:text-blue-600 transition-colors cursor-pointer" strokeWidth={2} />
               ) : (
-                <Sun className="w-5 h-5 text-slate-300 group-hover:text-yellow-400 transition-colors" strokeWidth={2} />
+                <Sun className="w-5 h-5 text-slate-300 group-hover:text-yellow-400 transition-colors cursor-pointer" strokeWidth={2} />
               )}
             </button>
              <AuthButton />
@@ -121,7 +121,7 @@ const Header = () => {
                 to={item.path}
                 className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold whitespace-nowrap transition-colors ${
                   isActivePath(item.path)
-                    ? "bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300"
+                    ? "bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300"
                     : "text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
                 }`}
               >

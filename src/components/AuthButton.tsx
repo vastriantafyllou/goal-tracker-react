@@ -25,7 +25,7 @@ export function AuthButton() {
     return (
       <Button
         onClick={handleLogout}
-        className="w-30 h-9 text-base font-semibold bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 shadow-lg hover:shadow-xl transition-all"
+        className="w-30 h-9 text-base font-semibold bg-gradient-to-r from-blue-600 to-sky-600 hover:from-blue-700 hover:to-sky-700 shadow-lg hover:shadow-xl transition-all cursor-pointer"
       >
         <LogOut className="w-5 h-5" /> Sign Out
       </Button>
@@ -40,7 +40,7 @@ export function AuthButton() {
         className="w-30 h-9 text-base font-semibold invisible pointer-events-none"
         aria-hidden="true"
       >
-        <LogIn className="w-5 h-5" /> Sign In
+        <LogIn className="w-5 h-5 cursor" /> Sign In
       </Button>
     );
   }
@@ -49,7 +49,8 @@ export function AuthButton() {
   return (
     <Button
       onClick={handleLogin}
-      className="w-30 h-9 text-base font-semibold bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 shadow-lg hover:shadow-xl transition-all"
+      className="w-30 h-9 text-base font-semibold bg-gradient-to-r from-blue-600 to-sky-600 hover:from-blue-700 hover:to-sky-700 shadow-lg hover:shadow-xl transition-all cursor-pointer"
+
     >
       <LogIn className="w-5 h-5" /> Sign In
     </Button>
