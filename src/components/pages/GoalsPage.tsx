@@ -185,7 +185,7 @@ const GoalsPage = () => {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
         <div className="text-center space-y-4">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
           <p className="text-slate-600 dark:text-slate-400 font-medium">Loading goals...</p>
         </div>
       </div>
@@ -198,7 +198,7 @@ const GoalsPage = () => {
       <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-lg border border-slate-200 dark:border-slate-800 p-6">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg">
+            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-sky-600 flex items-center justify-center shadow-lg">
               <Target className="w-6 h-6 text-white" strokeWidth={2.5} />
             </div>
             <div>
@@ -211,7 +211,7 @@ const GoalsPage = () => {
             </div>
           </div>
           <div className="text-right">
-            <div className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">
+            <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
               {stats.total}
             </div>
             <div className="text-xs text-slate-500 dark:text-slate-400">Total Goals</div>
@@ -223,17 +223,17 @@ const GoalsPage = () => {
         <div className="bg-gradient-to-br from-white to-slate-50 dark:from-slate-900 dark:to-slate-900/50 rounded-2xl shadow-lg border border-slate-200 dark:border-slate-800 p-12 text-center">
           <div className="max-w-md mx-auto">
             <div
-              className="w-20 h-20 bg-gradient-to-br from-indigo-100 to-purple-100 dark:from-indigo-900/30 dark:to-purple-900/30 rounded-2xl flex items-center justify-center mx-auto mb-5 shadow-md cursor-pointer"
+              className="w-20 h-20 bg-gradient-to-br from-blue-100 to-sky-100 dark:from-blue-900/30 dark:to-sky-900/30 rounded-2xl flex items-center justify-center mx-auto mb-5 shadow-md cursor-pointer"
               onClick={() => navigate("/goals/new")}
             >
             <Plus
-                className="w-10 h-10 text-indigo-600 dark:text-indigo-400" />
+                className="w-10 h-10 text-blue-600 dark:text-blue-400" />
             </div>
             <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100 mb-3">No goals yet</h3>
             <p className="text-slate-600 dark:text-slate-400 mb-7 leading-relaxed">Start by creating your first goal to begin tracking your progress!</p>
             <Button 
               onClick={() => navigate("/goals/new")} 
-              className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transition-all hover:scale-105"
+              className="bg-gradient-to-r from-blue-600 to-sky-600 hover:from-blue-700 hover:to-sky-700 text-white shadow-lg hover:shadow-xl transition-all hover:scale-105 cursor-pointer"
             >
               <Plus className="w-4 h-4 mr-2" />
               Create Your First Goal
@@ -258,7 +258,7 @@ const GoalsPage = () => {
                   {searchQuery && (
                     <button
                       onClick={() => setSearchQuery("")}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 cursor-pointer"
                     >
                       <X className="w-4 h-4" />
                     </button>
@@ -266,7 +266,7 @@ const GoalsPage = () => {
                 </div>
                 <Button 
                   onClick={() => navigate("/goals/new")} 
-                  className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transition-all"
+                  className="bg-gradient-to-r from-blue-600 to-sky-600 hover:from-blue-700 hover:to-sky-700 text-white shadow-lg hover:shadow-xl transition-all cursor-pointer"
                 >
                   <Plus className="w-4 h-4 mr-2" />
                   New Goal
@@ -280,7 +280,7 @@ const GoalsPage = () => {
                   <select
                     value={statusFilter}
                     onChange={(e) => setStatusFilter(e.target.value)}
-                    className="w-full h-9 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 text-sm text-slate-900 dark:text-slate-100 transition-all outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 dark:focus:ring-indigo-900"
+                    className="w-full h-9 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 text-sm text-slate-900 dark:text-slate-100 transition-all outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-900"
                   >
                     <option value="All">All Statuses</option>
                     <option value="InProgress">In Progress</option>
@@ -294,7 +294,7 @@ const GoalsPage = () => {
                   <select
                     value={categoryFilter}
                     onChange={(e) => setCategoryFilter(e.target.value)}
-                    className="w-full h-9 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 text-sm text-slate-900 dark:text-slate-100 transition-all outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 dark:focus:ring-indigo-900"
+                    className="w-full h-9 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 text-sm text-slate-900 dark:text-slate-100 transition-all outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-900"
                   >
                     <option value="All">All Categories</option>
                     {categories.map(cat => (
@@ -309,7 +309,7 @@ const GoalsPage = () => {
                   <select
                     value={dueDateFilter}
                     onChange={(e) => setDueDateFilter(e.target.value)}
-                    className="w-full h-9 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 text-sm text-slate-900 dark:text-slate-100 transition-all outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 dark:focus:ring-indigo-900"
+                    className="w-full h-9 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 text-sm text-slate-900 dark:text-slate-100 transition-all outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-900"
                   >
                     <option value="All">All Due Dates</option>
                     <option value="Overdue">Overdue</option>
@@ -323,7 +323,7 @@ const GoalsPage = () => {
                   <select
                     value={sortBy}
                     onChange={(e) => setSortBy(e.target.value)}
-                    className="w-full h-9 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 text-sm text-slate-900 dark:text-slate-100 transition-all outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 dark:focus:ring-indigo-900"
+                    className="w-full h-9 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 text-sm text-slate-900 dark:text-slate-100 transition-all outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-900"
                   >
                     <option value="dueDate-asc">Due Date (Earliest)</option>
                     <option value="dueDate-desc">Due Date (Latest)</option>
@@ -346,7 +346,7 @@ const GoalsPage = () => {
                     size="sm"
                     variant="ghost"
                     onClick={clearFilters}
-                    className="text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/20"
+                    className="text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 cursor-pointer"
                   >
                     <X className="w-3 h-3 mr-1" />
                     Clear Filters
@@ -431,7 +431,7 @@ const GoalsPage = () => {
                           size="sm"
                           variant="outline"
                           onClick={() => navigate(`/goals/${goal.id}`)}
-                          className="hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-500"
+                          className="hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-500 cursor-pointer"
                           title="Edit"
                         >
                           <Pencil className="w-4 h-4" />
@@ -440,6 +440,7 @@ const GoalsPage = () => {
                           size="sm"
                           variant="destructive"
                           onClick={() => handleDeleteClick(goal)}
+                          className="cursor-pointer"
                           title="Delete"
                         >
                           <Trash2 className="w-4 h-4" />
@@ -490,7 +491,7 @@ const GoalsPage = () => {
               type="button"
               variant="outline"
               onClick={() => setDeleteConfirmGoal(null)}
-              className="h-11 px-6"
+              className="h-11 px-6 cursor-pointer"
             >
               Cancel
             </Button>
@@ -498,7 +499,7 @@ const GoalsPage = () => {
               type="button"
               variant="destructive"
               onClick={confirmDelete}
-              className="h-11 px-6 shadow-lg hover:shadow-xl transition-all"
+              className="h-11 px-6 shadow-lg hover:shadow-xl transition-all cursor-pointer"
             >
               <span className="flex items-center gap-2">
                 <AlertTriangle className="w-4 h-4" />

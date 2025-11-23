@@ -181,7 +181,7 @@ export default function UserManagementPage() {
         );
       case UserRole.Admin:
         return (
-          <span className="inline-flex items-center gap-1 px-3 py-1 bg-gradient-to-r from-indigo-600 to-blue-600 text-white text-xs font-bold rounded-full">
+          <span className="inline-flex items-center gap-1 px-3 py-1 bg-gradient-to-r from-blue-600 to-sky-600 text-white text-xs font-bold rounded-full">
             <Shield className="w-3 h-3" /> Admin
           </span>
         );
@@ -221,7 +221,7 @@ export default function UserManagementPage() {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
         <div className="text-center space-y-4">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
           <p className="text-slate-600 dark:text-slate-400">Loading users...</p>
         </div>
       </div>
@@ -234,7 +234,7 @@ export default function UserManagementPage() {
       <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-lg border border-slate-200 dark:border-slate-800 p-6">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg">
+            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-sky-600 flex items-center justify-center shadow-lg">
               <Users className="w-6 h-6 text-white" strokeWidth={2.5} />
             </div>
             <div>
@@ -247,7 +247,7 @@ export default function UserManagementPage() {
             </div>
           </div>
           <div className="text-right">
-            <div className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">
+            <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
               {totalRecords}
             </div>
             <div className="text-xs text-slate-500 dark:text-slate-400">Total Users</div>
@@ -272,7 +272,7 @@ export default function UserManagementPage() {
                 />
               </div>
             </div>
-            <Button onClick={handleSearch} className="bg-indigo-600 hover:bg-indigo-700">
+            <Button onClick={handleSearch} className="bg-blue-600 hover:bg-blue-700 cursor-pointer">
               <Search className="w-4 h-4 mr-2" />
               Search
             </Button>
@@ -284,6 +284,7 @@ export default function UserManagementPage() {
                   setPageNumber(1);
                   setTimeout(loadUsers, 0);
                 }}
+                className="cursor-pointer"
               >
                 Clear
               </Button>
@@ -378,7 +379,7 @@ export default function UserManagementPage() {
                       size="sm"
                       variant="outline"
                       onClick={() => startEdit(user)}
-                      className="hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-500"
+                      className="hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-500 cursor-pointer"
                       title="Edit"
                     >
                       <Edit className="w-4 h-4" />
@@ -389,7 +390,7 @@ export default function UserManagementPage() {
                       <Button
                         size="sm"
                         onClick={() => requestPromote(user)}
-                        className="bg-green-600 hover:bg-green-700"
+                        className="bg-green-600 hover:bg-green-700 cursor-pointer"
                         title="Promote to Admin"
                       >
                         <TrendingUp className="w-4 h-4" />
@@ -400,7 +401,7 @@ export default function UserManagementPage() {
                       <Button
                         size="sm"
                         onClick={() => requestDemote(user)}
-                        className="bg-orange-600 hover:bg-orange-700"
+                        className="bg-orange-600 hover:bg-orange-700 cursor-pointer"
                         title="Demote to User"
                       >
                         <TrendingDown className="w-4 h-4" />
@@ -413,6 +414,7 @@ export default function UserManagementPage() {
                         size="sm"
                         variant="destructive"
                         onClick={() => handleDeleteClick(user)}
+                        className="cursor-pointer"
                         title="Delete"
                       >
                         <Trash2 className="w-4 h-4" />
@@ -435,7 +437,7 @@ export default function UserManagementPage() {
                   size="sm"
                   variant="outline"
                   onClick={() => setCurrentPage((p) => p - 1)}
-                  className="hover:bg-indigo-50 dark:hover:bg-indigo-900/20"
+                  className="hover:bg-blue-50 dark:hover:bg-blue-900/20 cursor-pointer"
                 >
                   <ChevronLeft className="w-4 h-4 mr-1" />
                   Prev
@@ -449,7 +451,7 @@ export default function UserManagementPage() {
                   size="sm"
                   variant="outline"
                   onClick={() => setCurrentPage((p) => p + 1)}
-                  className="hover:bg-indigo-50 dark:hover:bg-indigo-900/20"
+                  className="hover:bg-blue-50 dark:hover:bg-blue-900/20 cursor-pointer"
                 >
                   Next
                   <ChevronRight className="w-4 h-4 ml-1" />
@@ -477,7 +479,7 @@ export default function UserManagementPage() {
                   variant="outline"
                   onClick={() => setPageNumber((p) => Math.max(1, p - 1))}
                   disabled={pageNumber === 1}
-                  className="hover:bg-indigo-50 dark:hover:bg-indigo-900/20"
+                  className="hover:bg-blue-50 dark:hover:bg-blue-900/20 cursor-pointer"
                 >
                   <ChevronLeft className="w-4 h-4 mr-1" />
                   Previous
@@ -487,7 +489,7 @@ export default function UserManagementPage() {
                   variant="outline"
                   onClick={() => setPageNumber((p) => Math.min(totalPages, p + 1))}
                   disabled={pageNumber === totalPages}
-                  className="hover:bg-indigo-50 dark:hover:bg-indigo-900/20"
+                  className="hover:bg-blue-50 dark:hover:bg-blue-900/20 cursor-pointer"
                 >
                   Next
                   <ChevronRight className="w-4 h-4 ml-1" />
@@ -508,7 +510,7 @@ export default function UserManagementPage() {
               </h2>
               <button
                 onClick={cancelEdit}
-                className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
+                className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors cursor-pointer"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -560,7 +562,7 @@ export default function UserManagementPage() {
             <div className="flex gap-3 pt-4">
               <Button
                 onClick={handleUpdate}
-                className="flex-1 bg-indigo-600 hover:bg-indigo-700"
+                className="flex-1 bg-blue-600 hover:bg-blue-700 cursor-pointer"
               >
                 <Save className="w-4 h-4 mr-2" />
                 Save
@@ -568,7 +570,7 @@ export default function UserManagementPage() {
               <Button
                 onClick={cancelEdit}
                 variant="outline"
-                className="flex-1"
+                className="flex-1 cursor-pointer"
               >
                 Cancel
               </Button>
@@ -641,13 +643,13 @@ export default function UserManagementPage() {
               <Button
                 onClick={() => setRoleChangeConfirm(null)}
                 variant="outline"
-                className="flex-1"
+                className="flex-1 cursor-pointer"
               >
                 Cancel
               </Button>
               <Button
                 onClick={confirmRoleChange}
-                className={`flex-1 ${
+                className={`flex-1 cursor-pointer ${
                   roleChangeConfirm.action === 'promote'
                     ? 'bg-green-600 hover:bg-green-700'
                     : 'bg-orange-600 hover:bg-orange-700'
@@ -708,7 +710,7 @@ export default function UserManagementPage() {
               type="button"
               variant="outline"
               onClick={() => setDeleteConfirmUser(null)}
-              className="h-11 px-6"
+              className="h-11 px-6 cursor-pointer"
             >
               Cancel
             </Button>
@@ -716,7 +718,7 @@ export default function UserManagementPage() {
               type="button"
               variant="destructive"
               onClick={confirmDelete}
-              className="h-11 px-6 shadow-lg hover:shadow-xl transition-all"
+              className="h-11 px-6 shadow-lg hover:shadow-xl transition-all cursor-pointer"
             >
               <span className="flex items-center gap-2">
                 <AlertTriangle className="w-4 h-4" />
