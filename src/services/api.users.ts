@@ -3,6 +3,7 @@ import {getCookie} from "@/utils/cookies.ts";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
+// Generate authenticated request headers with JWT token
 function getAuthHeaders(): HeadersInit {
   const token = getCookie("access_token");
   return {
@@ -98,6 +99,7 @@ export async function register(userData: UserSignupFields): Promise<UserReadOnly
     body: JSON.stringify(userData),
   });
 
+  // Handle registration errors
   if (!res.ok) {
     let detail = "Registration failed";
     try {
@@ -105,13 +107,13 @@ export async function register(userData: UserSignupFields): Promise<UserReadOnly
       if (typeof data?.message === "string") detail = data.message;
       else if (typeof data?.detail === "string") detail = data.detail;
       else if (typeof data?.title === "string") detail = data.title;
-      // Handle validation errors
+      // Handle validation errors from backend
       else if (data?.errors) {
         const errors = Object.values(data.errors).flat();
         detail = errors.join(", ");
       }
-    } catch (error) {
-      console.log(error);
+    } catch {
+      // JSON parsing failed, use default error message
     }
     throw new Error(detail);
   }

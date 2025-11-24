@@ -23,6 +23,7 @@ export async function login({username, password}: LoginFields): Promise<LoginRes
     }),
   })
 
+  // Handle login errors
   if (!res.ok){
     let detail = "Login failed";
     try {
@@ -30,8 +31,8 @@ export async function login({username, password}: LoginFields): Promise<LoginRes
       if (typeof data?.message === "string") detail = data.message;
       else if (typeof data?.detail === "string") detail = data.detail;
       else if (typeof data?.title === "string") detail = data.title;
-    } catch (error){
-      console.log(error);
+    } catch {
+      // JSON parsing failed, use default error message
     }
     throw new Error(detail);
   }

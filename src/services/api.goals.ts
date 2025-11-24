@@ -3,6 +3,7 @@ import {getCookie} from "@/utils/cookies.ts";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
+// Generate authenticated request headers with JWT token
 function getAuthHeaders(): HeadersInit {
   const token = getCookie("access_token");
   return {

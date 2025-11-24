@@ -3,6 +3,7 @@ import {getCookie} from "@/utils/cookies.ts";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
+// Generate authenticated request headers with JWT token
 function getAuthHeaders(): HeadersInit {
   const token = getCookie("access_token");
   return {
@@ -34,6 +35,7 @@ export async function createCategory(data: CategoryCreateFields): Promise<Catego
     body: JSON.stringify(data),
   });
   
+  // Handle category creation errors
   if (!res.ok) {
     let detail = "Failed to create category";
     try {
@@ -41,8 +43,8 @@ export async function createCategory(data: CategoryCreateFields): Promise<Catego
       if (typeof errorData?.message === "string") detail = errorData.message;
       else if (typeof errorData?.detail === "string") detail = errorData.detail;
       else if (typeof errorData?.title === "string") detail = errorData.title;
-    } catch (error) {
-      console.log(error);
+    } catch {
+      // JSON parsing failed, use default error message
     }
     throw new Error(detail);
   }
