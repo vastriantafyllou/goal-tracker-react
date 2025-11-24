@@ -7,6 +7,8 @@ import {AuthContext} from "@/context/AuthContext.ts";
 
 /* eslint-disable react-hooks/set-state-in-effect */
 
+// JWT token payload structure from .NET backend
+// Uses standard Microsoft claim types for authentication
 type JwtPayload = {
   "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"?: string;
   "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"?: string;
@@ -22,6 +24,7 @@ export const AuthProvider = ({children}: {children: React.ReactNode}) => {
   const [userRole, setUserRole] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
+  // Decode JWT token and extract user info whenever access token changes
   useEffect(() => {
     const resetUser = () => {
       setUserId(null);
@@ -36,23 +39,28 @@ export const AuthProvider = ({children}: {children: React.ReactNode}) => {
       }
 
       try {
+        // Decode JWT to extract user claims
         const decoded = jwtDecode<JwtPayload>(accessToken);
 
+        // Extract user info from Microsoft claim types
         setUserId(decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"] ?? null);
         setUsername(decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"] ?? null);
         setUserRole(decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] ?? null);
       } catch {
+        // Invalid token - reset user state
         resetUser();
       }
     };
 
     process();
-    setLoading(false);  // <= SINGLE setState at the end → NO WARNING
+    setLoading(false);
   }, [accessToken]);
 
+  // Login user and store JWT token in cookie
   const loginUser = async (fields: LoginFields) => {
     const res = await login(fields);
 
+    // Store token in cookie (expires in 1 day)
     setCookie("access_token", res.token, {
       expires: 1,
       sameSite: "Lax",
@@ -63,6 +71,7 @@ export const AuthProvider = ({children}: {children: React.ReactNode}) => {
     setAccessToken(res.token);
   };
 
+  // Logout user and clear all auth state
   const logoutUser = () => {
     deleteCookie("access_token");
     setAccessToken(null);
