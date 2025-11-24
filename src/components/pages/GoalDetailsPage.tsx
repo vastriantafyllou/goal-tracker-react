@@ -39,15 +39,14 @@ const GoalDetailsPage = () => {
     }
   });
 
-  // Load categories
+  // Load categories for dropdown (categories are optional)
   useEffect(() => {
     getAllCategories()
       .then((data) => {
         setCategories(data);
       })
-      .catch((err) => {
-        console.log("Error loading categories: ", err);
-        // Don't show error toast, categories are optional
+      .catch(() => {
+        // Silent fail - categories are optional for goals
       })
       .finally(() => {
         setLoadingCategories(false);
@@ -60,6 +59,7 @@ const GoalDetailsPage = () => {
     
     getGoal(Number(goalId))
       .then((data) => {
+        // Populate form with existing goal data
         const values: GoalUpdateFields = {
           title: data.title,
           description: data.description || "",
@@ -70,7 +70,6 @@ const GoalDetailsPage = () => {
         reset(values);
       })
       .catch((err) => {
-        console.log("Error getting goal: ", err);
         toast.error(err instanceof Error ? err.message : "Failed to load goal");
         navigate("/goals");
       })

@@ -171,6 +171,7 @@ export default function UserManagementPage() {
     }
   };
 
+  // Generate styled role badge based on user role
   const getRoleBadge = (role: string) => {
     switch (role) {
       case UserRole.SuperAdmin:
@@ -194,13 +195,13 @@ export default function UserManagementPage() {
     }
   };
 
-  // Client-side role filtering
+  // Filter users by role (client-side filtering)
   const filteredUsers = useMemo(() => {
     if (roleFilter === "All") return users;
     return users.filter(user => user.userRole === roleFilter);
   }, [users, roleFilter]);
 
-  // Client-side pagination (5 users per page)
+  // Client-side pagination for filtered results (5 users per page)
   const USERS_PER_PAGE = 5;
   const totalClientPages = Math.ceil(filteredUsers.length / USERS_PER_PAGE);
   

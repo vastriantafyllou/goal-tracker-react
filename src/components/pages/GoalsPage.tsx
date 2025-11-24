@@ -74,11 +74,11 @@ const GoalsPage = () => {
     return Array.from(uniqueCategories).sort();
   }, [goals]);
   
-  // Filter and sort goals
+  // Filter and sort goals based on search and filter criteria
   const filteredAndSortedGoals = useMemo(() => {
     let filtered = goals;
     
-    // Search filter
+    // Apply search filter by title
     if (searchQuery) {
       filtered = filtered.filter(goal => 
         goal.title.toLowerCase().includes(searchQuery.toLowerCase())
@@ -99,7 +99,7 @@ const GoalsPage = () => {
       }
     }
     
-    // Due date filter
+    // Filter by due date ranges
     if (dueDateFilter !== "All") {
       const today = new Date();
       today.setHours(0, 0, 0, 0);
@@ -109,6 +109,7 @@ const GoalsPage = () => {
         const dueDate = new Date(goal.dueDate);
         dueDate.setHours(0, 0, 0, 0);
         
+        // Check different date ranges
         if (dueDateFilter === "Overdue") {
           return dueDate < today && goal.status !== "Completed";
         } else if (dueDateFilter === "Today") {
@@ -122,7 +123,7 @@ const GoalsPage = () => {
       });
     }
     
-    // Sorting
+    // Apply sorting based on selected criteria
     const sorted = [...filtered];
     const [sortField, sortOrder] = sortBy.split('-');
     
@@ -154,7 +155,7 @@ const GoalsPage = () => {
     return sorted;
   }, [goals, searchQuery, statusFilter, categoryFilter, dueDateFilter, sortBy]);
   
-  // Progress stats
+  // Calculate progress statistics for dashboard display
   const stats = useMemo(() => {
     const total = goals.length;
     const completed = goals.filter(g => g.status === "Completed").length;

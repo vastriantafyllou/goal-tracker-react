@@ -128,7 +128,7 @@ const CategoriesPage = () => {
     }
   };
 
-  // Delete category - with danger awareness
+  // Open delete confirmation modal
   const handleDeleteClick = (category: Category) => {
     setDeleteConfirmCategory(category);
   };
@@ -161,11 +161,11 @@ const CategoriesPage = () => {
     editForm.reset();
   };
   
-  // Filter and sort categories
+  // Filter and sort categories based on search and goal count
   const filteredAndSortedCategories = useMemo(() => {
     let filtered = categories;
     
-    // Search filter
+    // Apply search filter by name
     if (searchQuery) {
       filtered = filtered.filter(cat =>
         cat.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -179,7 +179,7 @@ const CategoriesPage = () => {
       filtered = filtered.filter(cat => (cat.goalCount ?? 0) === 0);
     }
     
-    // Sorting
+    // Apply sorting based on selected criteria
     const sorted = [...filtered];
     const [sortField, sortOrder] = sortBy.split('-');
     
