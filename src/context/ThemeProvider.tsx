@@ -9,12 +9,14 @@ export interface ThemeContextType {
 }
 
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
+  // Initialize theme from localStorage or system preference
   const [theme, setTheme] = useState<Theme>(() => {
     const stored = localStorage.getItem('theme') as Theme | null;
     if (stored) return stored;
     return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
   });
 
+  // Apply theme changes to DOM and persist to localStorage
   useEffect(() => {
     const root = document.documentElement;
     
