@@ -5,8 +5,8 @@ export const userSignupSchema = z.object({
   username: z.string().min(2, {message: "Username must be between 2 and 50 characters"}).max(50),
   email: z.string().email({message: "Invalid email address"}).max(100),
   password: z.string().regex(
-    /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?\d)(?=.*?\W).{8,}$/,
-    {message: "Password must contain at least one uppercase, one lowercase, one digit, and one special character"}
+    /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?\d)(?=.*?\W).{12,}$/,
+    {message: "Password must be at least 12 characters and contain at least one uppercase, one lowercase, one digit and one special character"}
   ),
   firstname: z.string().min(2, {message: "Firstname must be between 2 and 50 characters"}).max(50),
   lastname: z.string().min(2, {message: "Lastname must be between 2 and 50 characters"}).max(50),

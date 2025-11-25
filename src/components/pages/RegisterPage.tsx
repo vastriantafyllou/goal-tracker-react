@@ -164,7 +164,7 @@ export default function RegisterPage() {
                 id="password" 
                 {...register("password")}
                 className="pl-10 text-slate-900 dark:text-slate-100 dark:bg-slate-800 dark:border-slate-700 placeholder-slate-500 dark:placeholder-slate-400"
-                placeholder="••••••••"
+                placeholder="••••••••••••"
               />
             </div>
             {errors.password && (
@@ -192,7 +192,7 @@ export default function RegisterPage() {
                 className={`pl-10 text-slate-900 dark:text-slate-100 dark:bg-slate-800 dark:border-slate-700 placeholder-slate-500 dark:placeholder-slate-400 ${
                   confirmPassword && (passwordsMatch ? 'border-green-500 dark:border-green-500' : 'border-red-500 dark:border-red-500')
                 }`}
-                placeholder="••••••••"
+                placeholder="••••••••••••"
               />
               {confirmPassword && passwordsMatch && (
                 <CheckCircle2 className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-green-500" />
