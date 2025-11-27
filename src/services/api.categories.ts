@@ -14,7 +14,7 @@ function getAuthHeaders(): HeadersInit {
 
 // Get categories of authenticated user
 export async function getAllCategories(): Promise<Category[]> {
-  const res = await fetch(`${API_URL}/api/GoalCategory/GetMyCategories`, {
+  const res = await fetch(`${API_URL}/GoalCategory/GetMyCategories`, {
     method: "GET",
     headers: getAuthHeaders(),
     credentials: 'include',
@@ -28,7 +28,7 @@ export async function getAllCategories(): Promise<Category[]> {
 
 // Create new category (user-specific)
 export async function createCategory(data: CategoryCreateFields): Promise<Category> {
-  const res = await fetch(`${API_URL}/api/GoalCategory/CreateCategory`, {
+  const res = await fetch(`${API_URL}/GoalCategory/CreateCategory`, {
     method: "POST",
     headers: getAuthHeaders(),
     credentials: 'include',
@@ -52,7 +52,7 @@ export async function createCategory(data: CategoryCreateFields): Promise<Catego
 }
 
 export async function getCategory(id: number): Promise<Category> {
-  const res = await fetch(`${API_URL}/api/GoalCategory/GetCategory/${id}`, {
+  const res = await fetch(`${API_URL}/GoalCategory/GetCategory/${id}`, {
     method: "GET",
     headers: getAuthHeaders(),
     credentials: 'include',
@@ -69,7 +69,7 @@ export async function updateCategory(
   id: number,
   data: CategoryUpdateFields
 ): Promise<void> {
-  const res = await fetch(`${API_URL}/api/GoalCategory/UpdateCategory/${id}`, {
+  const res = await fetch(`${API_URL}/GoalCategory/UpdateCategory/${id}`, {
     method: "PUT",
     headers: getAuthHeaders(),
     credentials: 'include',
@@ -84,7 +84,7 @@ export async function updateCategory(
 
 // Delete category
 export async function deleteCategory(id: number): Promise<void> {
-  const res = await fetch(`${API_URL}/api/GoalCategory/DeleteCategory/${id}`, {
+  const res = await fetch(`${API_URL}/GoalCategory/DeleteCategory/${id}`, {
     method: "DELETE",
     headers: getAuthHeaders(),
     credentials: 'include',
