@@ -13,7 +13,7 @@ function getAuthHeaders(): HeadersInit {
 }
 
 export async function getGoals(): Promise<Goal[]> {
-  const res = await fetch(`${API_URL}/Goals/GetMyGoals`, {
+  const res = await fetch(`${API_URL}/goals`, {
     method: "GET",
     headers: getAuthHeaders(),
     credentials: 'include',
@@ -29,7 +29,7 @@ export async function getGoals(): Promise<Goal[]> {
 }
 
 export async function getGoal(id: number): Promise<Goal> {
-  const res = await fetch(`${API_URL}/Goals/GetGoal/${id}`, {
+  const res = await fetch(`${API_URL}/goals/${id}`, {
     method: "GET",
     headers: getAuthHeaders(),
     credentials: 'include',
@@ -48,7 +48,7 @@ export async function getGoal(id: number): Promise<Goal> {
 }
 
 export async function createGoal(data: GoalCreateFields): Promise<Goal> {
-  const res = await fetch(`${API_URL}/Goals/CreateGoal`, {
+  const res = await fetch(`${API_URL}/goals`, {
     method: "POST",
     headers: getAuthHeaders(),
     credentials: 'include',
@@ -74,7 +74,7 @@ export async function createGoal(data: GoalCreateFields): Promise<Goal> {
 }
 
 export async function updateGoal(id: number, data: GoalUpdateFields): Promise<void> {
-  const res = await fetch(`${API_URL}/Goals/UpdateGoal/${id}`, {
+  const res = await fetch(`${API_URL}/goals/${id}`, {
     method: "PUT",
     headers: getAuthHeaders(),
     credentials: 'include',
@@ -101,7 +101,7 @@ export async function updateGoal(id: number, data: GoalUpdateFields): Promise<vo
 }
 
 export async function deleteGoal(id: number): Promise<void> {
-  const res = await fetch(`${API_URL}/Goals/DeleteGoal/${id}`, {
+  const res = await fetch(`${API_URL}/goals/${id}`, {
     method: "DELETE",
     headers: getAuthHeaders(),
     credentials: 'include',

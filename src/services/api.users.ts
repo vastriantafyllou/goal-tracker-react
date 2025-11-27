@@ -27,7 +27,7 @@ export async function getAllUsers(
   if (email) params.append("email", email);
   if (userRole) params.append("userRole", userRole);
 
-  const res = await fetch(`${API_URL}/Users/GetAllUsers?${params.toString()}`, {
+  const res = await fetch(`${API_URL}/users?${params.toString()}`, {
     method: "GET",
     headers: getAuthHeaders(),
     credentials: 'include',
@@ -51,7 +51,7 @@ export async function getAllUsers(
  * @returns Full user details
  */
 export async function getUserById(id: number): Promise<UserReadOnly> {
-  const res = await fetch(`${API_URL}/Users/GetUserById/${id}`, {
+  const res = await fetch(`${API_URL}/users/${id}`, {
     method: "GET",
     headers: getAuthHeaders(),
     credentials: 'include',
@@ -75,7 +75,7 @@ export async function getUserById(id: number): Promise<UserReadOnly> {
  * @returns Full user details
  */
 export async function getUserByUsername(username: string): Promise<UserReadOnly> {
-  const res = await fetch(`${API_URL}/Users/by-username/${username}`, {
+  const res = await fetch(`${API_URL}/users/username/${username}`, {
     method: "GET",
     headers: getAuthHeaders(),
     credentials: 'include',
@@ -90,7 +90,7 @@ export async function getUserByUsername(username: string): Promise<UserReadOnly>
 }
 
 export async function register(userData: UserSignupFields): Promise<UserReadOnly> {
-  const res = await fetch(`${API_URL}/Users/RegisterUser/register`, {
+  const res = await fetch(`${API_URL}/users`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -122,7 +122,7 @@ export async function register(userData: UserSignupFields): Promise<UserReadOnly
 
 // Update a user (Admin/SuperAdmin only)
 export async function updateUser(id: number, userData: UserUpdateFields): Promise<UserReadOnly> {
-  const res = await fetch(`${API_URL}/Users/UpdateUser/${id}`, {
+  const res = await fetch(`${API_URL}/users/${id}`, {
     method: "PUT",
     headers: getAuthHeaders(),
     credentials: 'include',
@@ -138,7 +138,7 @@ export async function updateUser(id: number, userData: UserUpdateFields): Promis
 
 // Delete a user (Admin/SuperAdmin only)
 export async function deleteUser(id: number): Promise<void> {
-  const res = await fetch(`${API_URL}/Users/DeleteUser/${id}`, {
+  const res = await fetch(`${API_URL}/users/${id}`, {
     method: "DELETE",
     headers: getAuthHeaders(),
     credentials: 'include',
@@ -153,7 +153,7 @@ export async function deleteUser(id: number): Promise<void> {
 
 // Promote user to Admin (SuperAdmin only)
 export async function promoteToAdmin(id: number): Promise<UserReadOnly> {
-  const res = await fetch(`${API_URL}/Users/PromoteToAdmin/${id}/promote`, {
+  const res = await fetch(`${API_URL}/users/${id}/role/promote`, {
     method: "PATCH",
     headers: getAuthHeaders(),
     credentials: 'include',
@@ -169,7 +169,7 @@ export async function promoteToAdmin(id: number): Promise<UserReadOnly> {
 
 // Demote user to regular User (SuperAdmin only)
 export async function demoteToUser(id: number): Promise<UserReadOnly> {
-  const res = await fetch(`${API_URL}/Users/DemoteToUser/${id}/demote`, {
+  const res = await fetch(`${API_URL}/users/${id}/role/demote`, {
     method: "PATCH",
     headers: getAuthHeaders(),
     credentials: 'include',
