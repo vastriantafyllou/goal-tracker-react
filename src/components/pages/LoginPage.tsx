@@ -41,7 +41,7 @@ export default function LoginPage(){
     <div className="flex items-center justify-center py-8 px-4">
       <div className="w-full max-w-md">
         {/* Header */}
-        <div className="text-center mb-8">
+        <div className="text-center mb-6">
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-blue-500 to-sky-600 mb-4 shadow-lg">
             <Target className="w-8 h-8 text-white" />
           </div>
@@ -56,7 +56,7 @@ export default function LoginPage(){
         {/* Form */}
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="bg-white dark:bg-slate-900 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-800 p-8 space-y-6"
+          className="bg-white dark:bg-slate-900 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-800 p-8 space-y-4"
           autoComplete="off"
         >
           {/* Username */}
@@ -117,16 +117,29 @@ export default function LoginPage(){
               </span>
             )}
           </Button>
-          
+
           {/* Register Link */}
-          <div className="text-center pt-2 border-t border-slate-200 dark:border-slate-800">
+          <div className="text-center pt-2 border-slate-200 dark:border-slate-800">
             <p className="text-sm text-slate-600 dark:text-slate-400">
               Don't have an account?{" "}
-              <Link 
-                to="/register" 
+              <Link
+                to="/register"
                 className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-semibold hover:underline"
               >
                 Register here
+              </Link>
+            </p>
+          </div>
+
+          {/* Forgot Password Link */}
+          <div className="text-center pt-2 border-t border-slate-200 dark:border-slate-800">
+            <p className="text-sm text-slate-600 dark:text-slate-400">
+              Forgot your password?{" "}
+              <Link
+                to="/forgot-password"
+                className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-semibold hover:underline"
+              >
+                Reset here
               </Link>
             </p>
           </div>

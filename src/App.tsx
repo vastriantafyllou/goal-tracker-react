@@ -3,6 +3,8 @@ import Layout from "@/components/layout/Layout.tsx";
 import HomePage from "@/components/pages/HomePage.tsx";
 import LoginPage from "@/components/pages/LoginPage.tsx";
 import RegisterPage from "@/components/pages/RegisterPage.tsx";
+import ForgotPasswordPage from "@/components/pages/ForgotPasswordPage.tsx";
+import ResetPasswordPage from "@/components/pages/ResetPasswordPage.tsx";
 import GoalsPage from "@/components/pages/GoalsPage.tsx";
 import GoalDetailsPage from "@/components/pages/GoalDetailsPage.tsx";
 import CategoriesPage from "@/components/pages/CategoriesPage.tsx";
@@ -26,6 +28,8 @@ function App() {
               <Route index element={<HomePage />} />
               <Route path="login" element={<LoginPage />} />
               <Route path="register" element={<RegisterPage />} />
+              <Route path="forgot-password" element={<ForgotPasswordPage />} />
+              <Route path="reset-password" element={<ResetPasswordPage />} />
               <Route path="privacy" element={<PrivacyPolicyPage />} />
               <Route path="terms" element={<TermsPage />} />
               {/* Fix: Redirect old /dashboard → /goals */}
