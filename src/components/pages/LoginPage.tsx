@@ -42,7 +42,7 @@ export default function LoginPage(){
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-6">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-blue-500 to-sky-600 mb-4 shadow-lg">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-linear-to-br from-blue-500 to-sky-600 mb-4 shadow-lg">
             <Target className="w-8 h-8 text-white" />
           </div>
           <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-2">
@@ -105,7 +105,7 @@ export default function LoginPage(){
           {/* Submit Button */}
           <Button 
             disabled={isSubmitting} 
-            className="w-full h-11 text-base font-semibold bg-gradient-to-r from-blue-600 to-sky-600 hover:from-blue-700 hover:to-sky-700 shadow-lg hover:shadow-xl transition-all cursor-pointer"
+            className="w-full h-11 text-base font-semibold bg-linear-to-r from-blue-600 to-sky-600 hover:from-blue-700 hover:to-sky-700 shadow-lg hover:shadow-xl transition-all cursor-pointer"
           >
             {isSubmitting ? (
               <span className="flex items-center gap-2">
@@ -126,22 +126,19 @@ export default function LoginPage(){
                 to="/register"
                 className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-semibold hover:underline"
               >
-                Register here
+                Register here!
               </Link>
             </p>
           </div>
 
           {/* Forgot Password Link */}
           <div className="text-center pt-2 border-t border-slate-200 dark:border-slate-800">
-            <p className="text-sm text-slate-600 dark:text-slate-400">
-              Forgot your password?{" "}
               <Link
                 to="/forgot-password"
-                className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-semibold hover:underline"
+                className="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-semibold hover:underline"
               >
-                Reset here
+                Forgot password?
               </Link>
-            </p>
           </div>
         </form>
 
