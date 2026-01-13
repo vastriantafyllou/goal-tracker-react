@@ -10,6 +10,26 @@
 
 Track personal and professional goals with role-based access control, category organization, and a responsive interface.
 
+## 📋 Table of Contents
+
+- [Screenshots](#-screenshots)
+- [Demo](#-demo)
+- [Features](#-features)
+- [Tech Stack](#tech-stack)
+- [Installation & Setup](#-installation--setup)
+- [Environment Configuration](#-environment-configuration)
+- [Project Structure](#-project-structure)
+- [Role-Based Features](#-role-based-features)
+- [Dark/Light Theme](#-darklight-theme)
+- [API Communication](#-api-communication)
+- [Development Scripts](#-development-scripts)
+- [Build & Deploy](#build-deploy)
+- [Contributing](#-contributing)
+- [License](#-license)
+- [Related Projects](#-related-projects)
+
+---
+
 ## 📸 Screenshots
 
 [Home Page](./docs/screenshots/home.png) <br>
@@ -37,7 +57,7 @@ Track personal and professional goals with role-based access control, category o
 - **Toast Notifications** - User-friendly feedback messages
 
 ---
-
+<a id="tech-stack"></a>
 ## 🛠️ Tech Stack
 
 **Core:**
@@ -195,6 +215,69 @@ npm run lint     # ESLint
 ```
 
 ---
+## <a id="build-deploy"></a>
+## 🏗️ Build & Deploy
+
+### Production Build
+
+```bash
+# Create optimized production build
+npm run build
+
+# Preview the build locally
+npm run preview
+```
+
+The build output is generated in the `dist/` folder.
+
+### Environment Variables
+
+Create a `.env` file for production:
+
+```env
+VITE_API_URL=https://your-api-domain.com/api
+VITE_RECAPTCHA_SITE_KEY=your_recaptcha_site_key
+```
+
+### Deploy Options
+
+**Vercel (Recommended):**
+```bash
+npm install -g vercel
+vercel --prod
+```
+
+**Netlify:**
+```bash
+npm install -g netlify-cli
+netlify deploy --prod --dir=dist
+```
+
+**Docker:**
+```dockerfile
+FROM node:18-alpine AS build
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci
+COPY . .
+RUN npm run build
+
+FROM nginx:alpine
+COPY --from=build /app/dist /usr/share/nginx/html
+EXPOSE 80
+```
+
+**Static Hosting (GitHub Pages, S3, etc.):**
+- Upload the contents of `dist/` to your hosting provider
+- Configure SPA routing (redirect all routes to `index.html`)
+
+### Important Notes
+
+- Ensure `VITE_API_URL` points to your production backend
+- Enable HTTPS for secure cookie handling
+- Configure CORS on your backend for the frontend domain
+
+---
 
 ## 🤝 Contributing
 
@@ -217,13 +300,14 @@ MIT License - see [LICENSE](LICENSE) file for details.
 
 **Vasileios Triantafyllou**
 
-- [LinkedIn](https://www.linkedin.com/in/vasileios-triantafyllou-0b028710b/)
-- [GitHub](https://github.com/vastriantafyllou)
+- LinkedIn: [Vasileios Triantafyllou](https://www.linkedin.com/in/vasileios-triantafyllou-0b028710b/)
+- GitHub: [@vastriantafyllou](https://github.com/vastriantafyllou)
 - Email: triantafyllou.vasileios@gmail.com
+
 
 ---
 
-## 🔗 Related
+## 🔗 Related Projects
 
 - **Backend API:** [GoalTrackerAPI](https://github.com/vastriantafyllou/GoalTrackerAPI/tree/main)
 
