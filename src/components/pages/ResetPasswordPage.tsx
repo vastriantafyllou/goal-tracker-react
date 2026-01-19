@@ -176,7 +176,7 @@ export default function ResetPasswordPage() {
                   variant="outline"
                   className="w-full"
                 >
-                  Back to Login
+                  Back to Sign in
                 </Button>
               </div>
             </div>
@@ -361,7 +361,7 @@ export default function ResetPasswordPage() {
                 onClick={() => navigate("/login")}
                 className="text-blue-600 dark:text-blue-400 hover:underline font-medium"
               >
-                Back to Login
+                Back to Sign in
               </button>
             </p>
           </div>

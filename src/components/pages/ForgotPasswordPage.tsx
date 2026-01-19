@@ -146,7 +146,7 @@ export default function ForgotPasswordPage() {
                   className="w-full bg-gradient-to-r from-blue-600 to-sky-600 hover:from-blue-700 hover:to-sky-700"
                 >
                   <ArrowLeft className="w-4 h-4 mr-2" />
-                  Back to Login
+                  Back to Sign in
                 </Button>
               </div>
             </div>
@@ -257,7 +257,7 @@ export default function ForgotPasswordPage() {
               className="text-sm text-blue-600 dark:text-blue-400 hover:underline font-medium inline-flex items-center gap-1"
             >
               <ArrowLeft className="w-4 h-4" />
-              Back to Login
+              Back to Sign in
             </Link>
           </div>
 
@@ -268,7 +268,7 @@ export default function ForgotPasswordPage() {
                 to="/register"
                 className="text-blue-600 dark:text-blue-400 hover:underline font-medium"
               >
-                Sign up
+                Sign up!
               </Link>
             </p>
           </div>
