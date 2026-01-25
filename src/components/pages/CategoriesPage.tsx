@@ -229,22 +229,22 @@ const CategoriesPage = () => {
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 max-w-7xl space-y-6">
       {/* Page Header Card */}
       <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-lg border border-slate-200 dark:border-slate-800 p-6">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-sky-600 flex items-center justify-center shadow-lg">
-              <FolderPlus className="w-6 h-6 text-white" strokeWidth={2.5} />
+            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-blue-500 to-sky-600 flex items-center justify-center shadow-lg flex-shrink-0">
+              <FolderPlus className="w-5 h-5 sm:w-6 sm:h-6 text-white" strokeWidth={2.5} />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">
+              <h1 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-100">
                 My Categories
               </h1>
-              <p className="text-sm text-slate-600 dark:text-slate-400">
+              <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400">
                 Manage your goal categories
               </p>
             </div>
           </div>
-          <div className="text-right">
-            <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+          <div className="text-left sm:text-right">
+            <div className="text-xl sm:text-2xl font-bold text-blue-600 dark:text-blue-400">
               {categories.length}
             </div>
             <div className="text-xs text-slate-500 dark:text-slate-400">Total Categories</div>
@@ -257,7 +257,7 @@ const CategoriesPage = () => {
         <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-lg border border-slate-200 dark:border-slate-800 p-4">
           <div className="flex flex-col gap-4">
             {/* Search Bar with New Category Button */}
-            <div className="flex gap-3">
+            <div className="flex flex-col sm:flex-row gap-3">
               <div className="flex-1 relative">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                 <Input
@@ -285,9 +285,9 @@ const CategoriesPage = () => {
             </div>
             
             {/* Filters and Sort Row */}
-            <div className="flex flex-col sm:flex-row gap-3">
+            <div className="grid grid-cols-2 gap-3">
               {/* Filter by Goal Count */}
-              <div className="flex-1">
+              <div>
                 <select
                   value={filterBy}
                   onChange={(e) => setFilterBy(e.target.value)}
@@ -300,7 +300,7 @@ const CategoriesPage = () => {
               </div>
               
               {/* Sort By */}
-              <div className="flex-1">
+              <div>
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}

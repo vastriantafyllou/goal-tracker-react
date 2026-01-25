@@ -233,22 +233,22 @@ export default function UserManagementPage() {
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 max-w-7xl space-y-6">
       {/* Header */}
       <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-lg border border-slate-200 dark:border-slate-800 p-6">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-sky-600 flex items-center justify-center shadow-lg">
-              <Users className="w-6 h-6 text-white" strokeWidth={2.5} />
+            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-blue-500 to-sky-600 flex items-center justify-center shadow-lg flex-shrink-0">
+              <Users className="w-5 h-5 sm:w-6 sm:h-6 text-white" strokeWidth={2.5} />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">
+              <h1 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-slate-100">
                 User Management
               </h1>
-              <p className="text-sm text-slate-600 dark:text-slate-400">
+              <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400">
                 {isSuperAdmin ? "SuperAdmin Panel - Full Control" : "Admin Panel - User Management"}
               </p>
             </div>
           </div>
-          <div className="text-right">
-            <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+          <div className="text-left sm:text-right">
+            <div className="text-xl sm:text-2xl font-bold text-blue-600 dark:text-blue-400">
               {totalRecords}
             </div>
             <div className="text-xs text-slate-500 dark:text-slate-400">Total Users</div>
@@ -260,7 +260,7 @@ export default function UserManagementPage() {
       <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-lg border border-slate-200 dark:border-slate-800 p-4">
         <div className="flex flex-col gap-4">
           {/* Search Row */}
-          <div className="flex gap-3">
+          <div className="flex flex-col sm:flex-row gap-3">
             <div className="flex-1">
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
@@ -293,7 +293,7 @@ export default function UserManagementPage() {
           </div>
           
           {/* Role Filter Row */}
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-3">
             <Filter className="w-4 h-4 text-slate-500 dark:text-slate-400" />
             <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Filter by Role:</span>
             <select
