@@ -148,7 +148,7 @@ export default function ResetPasswordPage() {
             </p>
           </div>
 
-          <div className="bg-white dark:bg-slate-800 rounded-lg shadow-xl border border-slate-200 dark:border-slate-700 p-8">
+          <div className="bg-white dark:bg-slate-800 rounded-lg shadow-xl border border-slate-200 dark:border-slate-700 p-4 sm:p-8">
             <div className="space-y-4 text-center">
               <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
                 <div className="flex items-start gap-2 text-red-800 dark:text-red-200 text-sm">
@@ -202,7 +202,7 @@ export default function ResetPasswordPage() {
             </p>
           </div>
 
-          <div className="bg-white dark:bg-slate-800 rounded-lg shadow-xl border border-slate-200 dark:border-slate-700 p-8">
+          <div className="bg-white dark:bg-slate-800 rounded-lg shadow-xl border border-slate-200 dark:border-slate-700 p-4 sm:p-8">
             <div className="space-y-4 text-center">
               <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4">
                 <p className="text-sm text-green-800 dark:text-green-200">
@@ -242,7 +242,7 @@ export default function ResetPasswordPage() {
           </p>
         </div>
 
-        <div className="bg-white dark:bg-slate-800 rounded-lg shadow-xl border border-slate-200 dark:border-slate-700 p-8">
+        <div className="bg-white dark:bg-slate-800 rounded-lg shadow-xl border border-slate-200 dark:border-slate-700 p-4 sm:p-8">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             <div className="space-y-2">
               <Label

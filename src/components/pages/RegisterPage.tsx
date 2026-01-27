@@ -46,7 +46,7 @@ export default function RegisterPage() {
 
   return (
     <div className="flex items-center justify-center py-8 px-4">
-      <div className="w-full max-w-lg">
+      <div className="w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-blue-500 to-sky-600 mb-4 shadow-lg">
@@ -63,11 +63,11 @@ export default function RegisterPage() {
         {/* Form */}
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="bg-white dark:bg-slate-900 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-800 p-8 space-y-5"
+          className="bg-white dark:bg-slate-900 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-800 p-4 sm:p-8 space-y-5"
           autoComplete="off"
         >
           {/* Name Fields */}
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <Label htmlFor="firstname" className="text-slate-700 dark:text-slate-300">
                 First Name *
