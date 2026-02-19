@@ -9,6 +9,7 @@ import GoalsPage from "@/components/pages/GoalsPage.tsx";
 import GoalDetailsPage from "@/components/pages/GoalDetailsPage.tsx";
 import CategoriesPage from "@/components/pages/CategoriesPage.tsx";
 import UserManagementPage from "@/components/pages/UserManagementPage.tsx";
+import ProfilePage from "@/components/pages/ProfilePage.tsx";
 import PrivacyPolicyPage from "@/components/pages/PrivacyPolicyPage.tsx";
 import TermsPage from "@/components/pages/TermsPage.tsx";
 import ProtectedRoute from "@/components/ProtectedRoute.tsx";
@@ -51,6 +52,10 @@ function App() {
 
                 <Route path="users">
                   <Route index element={<UserManagementPage />} />
+                </Route>
+
+                <Route path="profile">
+                  <Route index element={<ProfilePage />} />
                 </Route>
               </Route>
             </Route>

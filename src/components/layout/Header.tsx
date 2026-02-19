@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router";
-import { Moon, Sun, Target, Home, ListChecks, Users, Folders } from "lucide-react";
+import { Moon, Sun, Target, Home, ListChecks, Users, Folders, UserCircle } from "lucide-react";
 import { useTheme } from "@/hooks/useTheme";
 import { useAuth } from "@/hooks/useAuth";
 import { UserRole } from "@/schemas/users";
@@ -17,6 +17,7 @@ const Header = () => {
     { name: "Users", path: "/users", icon: Users, protected: true, adminOnly: true },
     { name: "Goals", path: "/goals", icon: ListChecks, protected: true },
     { name: "Categories", path: "/categories", icon: Folders, protected: true },
+    { name: "Profile", path: "/profile", icon: UserCircle, protected: true, userOnly: true },
   ];
 
   const isActivePath = (path: string) => {
@@ -51,6 +52,7 @@ const Header = () => {
             {navItems.map((item) => {
               if (item.protected && !isAuthenticated) return null;
               if (item.adminOnly && !isAdmin) return null;
+              if (item.userOnly && isAdmin) return null;
               if (item.onlyWhenLoggedOut && isAuthenticated) return null;
               const Icon = item.icon;
               
@@ -112,6 +114,7 @@ const Header = () => {
           {navItems.map((item) => {
             if (item.protected && !isAuthenticated) return null;
             if (item.adminOnly && !isAdmin) return null;
+            if (item.userOnly && isAdmin) return null;
             if (item.onlyWhenLoggedOut && isAuthenticated) return null;
             const Icon = item.icon;
             

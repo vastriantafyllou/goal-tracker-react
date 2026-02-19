@@ -1,4 +1,4 @@
-import type {UserReadOnly, UserUpdateFields, PaginatedResult, UserSignupFields} from "@/schemas/users.ts";
+import type {UserReadOnly, UserUpdateFields, ProfileUpdateFields, PaginatedResult, UserSignupFields} from "@/schemas/users.ts";
 import {getCookie} from "@/utils/cookies.ts";
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -179,6 +179,49 @@ export async function demoteToUser(id: number): Promise<UserReadOnly> {
     if (res.status === 401) throw new Error("Unauthorized access");
     if (res.status === 403) throw new Error("Only SuperAdmin can demote users");
     throw new Error("Failed to demote user");
+  }
+  return await res.json();
+}
+
+// Get the current user's own profile by their ID
+export async function getMyProfile(id: number): Promise<UserReadOnly> {
+  const res = await fetch(`${API_URL}/users/${id}`, {
+    method: "GET",
+    headers: getAuthHeaders(),
+    credentials: 'include',
+  });
+
+  if (!res.ok) {
+    if (res.status === 401) throw new Error("Unauthorized - please sign in again");
+    if (res.status === 403) throw new Error("Access denied");
+    if (res.status === 404) throw new Error("Profile not found");
+    throw new Error("Failed to load profile");
+  }
+  return await res.json();
+}
+
+// Update the current user's own profile (no role change)
+export async function updateMyProfile(id: number, data: ProfileUpdateFields): Promise<UserReadOnly> {
+  const res = await fetch(`${API_URL}/users/${id}`, {
+    method: "PUT",
+    headers: getAuthHeaders(),
+    credentials: 'include',
+    body: JSON.stringify(data),
+  });
+
+  if (!res.ok) {
+    if (res.status === 401) throw new Error("Unauthorized - please sign in again");
+    if (res.status === 403) throw new Error("Access denied");
+    let detail = "Failed to update profile";
+    try {
+      const errorData = await res.json();
+      if (typeof errorData?.message === "string") detail = errorData.message;
+      else if (typeof errorData?.detail === "string") detail = errorData.detail;
+      else if (typeof errorData?.title === "string") detail = errorData.title;
+    } catch {
+      // ignore
+    }
+    throw new Error(detail);
   }
   return await res.json();
 }

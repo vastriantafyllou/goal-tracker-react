@@ -47,6 +47,16 @@ export const userUpdateSchema = z.object({
 
 export type UserUpdateFields = z.infer<typeof userUpdateSchema>;
 
+// Profile update schema (self-edit, no role change)
+export const profileUpdateSchema = z.object({
+  username: z.string().min(2, { message: "Username must be between 2 and 50 characters" }).max(50).optional(),
+  email: z.string().email({ message: "Invalid email address" }).max(100).optional(),
+  firstname: z.string().min(2, { message: "First name must be between 2 and 50 characters" }).max(50).optional(),
+  lastname: z.string().min(2, { message: "Last name must be between 2 and 50 characters" }).max(50).optional(),
+});
+
+export type ProfileUpdateFields = z.infer<typeof profileUpdateSchema>;
+
 // Paginated result type
 export type PaginatedResult<T> = {
   data: T[];
